@@ -1,90 +1,107 @@
-CREATE DATABASE training_mange;
-
-CREATE TABLE "User" (
+CREATE TABLE Users ( 
     user_id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL,
+    first_name VARCHAR(20) NOT NULL,
+    first_last VARCHAR(20) NOT NULL,
+    phone_number VARCHAR(20) NOT NULL,
     email VARCHAR(100) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL,
-    role VARCHAR(20) CHECK (role IN ('Admin', 'Trainer', 'Trainee')) NOT NULL
+    birth_date DATE NOT NULL,
+    role VARCHAR(10) CHECK (role IN ('Admin', 'Trainer', 'Trainee')) NOT NULL
 );
 
-CREATE TABLE Admin (
-    admin_id SERIAL PRIMARY KEY,
-    user_id INT UNIQUE REFERENCES "User"(user_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Trainer (
-    trainer_id SERIAL PRIMARY KEY,
-    user_id INT UNIQUE REFERENCES "User"(user_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Trainee (
-    trainee_id SERIAL PRIMARY KEY,
-    user_id INT UNIQUE REFERENCES "User"(user_id) ON DELETE CASCADE
-);
-
-CREATE TABLE Training (
+CREATE TABLE Trainings(
     training_id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description TEXT,
-    status VARCHAR(20),
     created_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    admin_id INT REFERENCES Admin(admin_id) ON DELETE SET NULL
+    status VARCHAR(20) Check (status in ('Completed' , 'OnGoing' , 'Cancelled' , 'Archived' )),
+    admin_id INT REFERENCES User(user_id) ON DELETE SET NULL
 );
 
-CREATE TABLE Course (
+CREATE TABLE Courses (
     course_id SERIAL PRIMARY KEY,
     title VARCHAR(100) NOT NULL,
     description TEXT,
-    status VARCHAR(20),
-    training_id INT REFERENCES Training(training_id) ON DELETE CASCADE,
-    trainer_id INT REFERENCES Trainer(trainer_id) ON DELETE SET NULL
+    status VARCHAR(20) CHECK (status IN ('Completed', 'OnGoing', 'Cancelled')),
+    trainer_id INT REFERENCES User(user_id) ON DELETE SET NULL
 );
 
-CREATE TABLE Session (
+
+CREATE TABLE Sessions (
     session_id SERIAL PRIMARY KEY,
-    start_time TIMESTAMP NOT NULL,
-    end_time TIMESTAMP NOT NULL,
-    status VARCHAR(20),
-    course_id INT REFERENCES Course(course_id) ON DELETE CASCADE
+    title VARCHAR(20) NOT NULL,
+    notes VARCHAR(200) NOT NULL,
+    course_id INT REFERENCES Courses(course_id) ON DELETE CASCADE,
+    scheduled_datetime DATE NOT NULL,
+    status VARCHAR(20) CHECK (status IN ('Completed', 'OnGoing', 'Cancelled'))
 );
 
-CREATE TABLE TrainingMaterial (
+
+CREATE TABLE Materials (
     material_id SERIAL PRIMARY KEY,
     title VARCHAR(100),
-    file_url TEXT,
-    upload_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    trainer_id INT REFERENCES Trainer(trainer_id) ON DELETE SET NULL,
-    course_id INT REFERENCES Course(course_id) ON DELETE CASCADE
+    file BYTEA NOT NULL,   -- Use BYTEA for binary data (files)
+    file_type VARCHAR(20) NOT NULL,
+    uploaded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    uploaded_by INT,
+    session_id INT,
+    FOREIGN KEY (uploaded_by) REFERENCES "User"(user_id) ON DELETE SET NULL,
+    FOREIGN KEY (session_id) REFERENCES public.Sessions(session_id) ON DELETE SET NULL  -- Ensure this points to the correct schema
 );
 
-CREATE TABLE Feedback (
+
+CREATE TABLE Feedbacks (
     feedback_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES User(user_id) ON DELETE SET NULL,
     rating INT CHECK (rating BETWEEN 1 AND 5),
     comments TEXT,
-    trainee_id INT REFERENCES Trainee(trainee_id) ON DELETE CASCADE,
-    course_id INT REFERENCES Course(course_id) ON DELETE CASCADE
+    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Certificate (
+CREATE TABLE Certificates(
     certificate_id SERIAL PRIMARY KEY,
-    file TEXT,
-    issue_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    trainee_id INT REFERENCES Trainee(trainee_id) ON DELETE CASCADE,
-    course_id INT REFERENCES Course(course_id) ON DELETE CASCADE
+    file BYTEA,  -- Using BYTEA for binary data (e.g., file content)
+    trainee_id INT REFERENCES User(user_id) ON DELETE CASCADE,
+    training_id INT REFERENCES Trainings(training_id) ON DELETE CASCADE,
+    issue_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE Attendance (
+
+CREATE TABLE Attendances (
     attendance_id SERIAL PRIMARY KEY,
-    timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status VARCHAR(20),
-    session_id INT REFERENCES Session(session_id) ON DELETE CASCADE,
-    trainee_id INT REFERENCES Trainee(trainee_id) ON DELETE CASCADE
+    session_id INT REFERENCES Sessions(session_id) ON DELETE CASCADE,
+    trainee_id INT REFERENCES User(user_id) ON DELETE CASCADE,
+    attended BOOLEAN NOT NULL
 );
 
--- Many-to-many relation between Course and Trainee
-CREATE TABLE CourseEnrollment (
-    course_id INT REFERENCES Course(course_id) ON DELETE CASCADE,
-    trainee_id INT REFERENCES Trainee(trainee_id) ON DELETE CASCADE,
-    PRIMARY KEY (course_id, trainee_id)
+CREATE TABLE Enrollments (
+    enrollment_id SERIAL PRIMARY KEY,  -- Unique identifier for the enrollment
+    trainee_id INT REFERENCES User(user_id) ON DELETE CASCADE,
+    course_id INT REFERENCES Courses(course_id) ON DELETE CASCADE,
+    enrollment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) CHECK (status IN ('Approved', 'Rejected', 'Pending'))
+);
+
+
+CREATE TABLE Training_Courses (
+    training_id INT REFERENCES Trainings(training_id) ON DELETE CASCADE,
+    course_id INT REFERENCES Courses(course_id) ON DELETE CASCADE,
+    PRIMARY KEY (training_id, course_id)
+);
+
+CREATE TABLE Assessments (
+    assessment_id SERIAL PRIMARY KEY,
+    title VARCHAR(50),
+    description VARCHAR(300),
+    total_marks INT,
+    course_id INT REFERENCES Courses(course_id) ON DELETE CASCADE,
+    create_by INT REFERENCES User(user_id) ON DELETE CASCADE
+);
+
+CREATE TABLE Notifications (
+    notification_id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES User(user_id) ON DELETE CASCADE,
+    message VARCHAR(100) NOT NULL,
+    sent_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_read BOOLEAN DEFAULT FALSE
 );
