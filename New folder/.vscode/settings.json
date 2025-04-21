@@ -1,0 +1,11 @@
+{
+    "java.format.settings.url": ".vscode/java-formatter.xml",
+    "java.project.sourcePaths": ["src/main/java"],
+    "java.project.outputPath": "target/classes",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar"
+    ],
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.configuration.maven.notCoveredPluginExecutionSeverity": "ignore"
+}
