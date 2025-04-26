@@ -1,0 +1,213 @@
+/* Custom CSS for Training Management System */
+
+:root {
+    --primary-color: #dc3545;
+    --primary-dark: #b02a37;
+    --primary-light: rgba(220, 53, 69, 0.1);
+    --secondary-color: #343a40;
+    --light-gray: #f8f9fa;
+    --border-color: #dee2e6;
+    --success-color: #198754;
+    --warning-color: #ffc107;
+    --info-color: #0dcaf0;
+    --danger-color: #dc3545;
+}
+
+/* General Layout */
+body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: #f5f5f5;
+}
+
+main {
+    flex: 1;
+}
+
+footer {
+    margin-top: auto;
+    background-color: var(--secondary-color);
+    color: white;
+}
+
+/* Custom Colors */
+.bg-primary-light {
+    background-color: var(--primary-light);
+}
+
+.bg-success-light {
+    background-color: rgba(25, 135, 84, 0.1);
+}
+
+.bg-warning-light {
+    background-color: rgba(255, 193, 7, 0.1);
+}
+
+/* Buttons */
+.btn-primary {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-primary:hover, .btn-primary:focus {
+    background-color: var(--primary-dark);
+    border-color: var(--primary-dark);
+}
+
+.btn-outline-primary {
+    color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.btn-outline-primary:hover {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Cards */
+.card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    border: none;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.card-header {
+    background-color: white;
+    border-bottom: 1px solid var(--border-color);
+    font-weight: 600;
+}
+
+.card-header.bg-primary {
+    background-color: var(--primary-color) !important;
+}
+
+/* Dashboard cards */
+.dashboard-card {
+    padding: 1.5rem;
+    text-align: center;
+    background-color: white;
+    border-radius: 10px;
+    border-top: 4px solid var(--primary-color);
+}
+
+.dashboard-card-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+}
+
+.dashboard-card-number {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+/* Forms */
+.form-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background-color: white;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.25rem rgba(220, 53, 69, 0.25);
+}
+
+.required-field::after {
+    content: "*";
+    color: var(--danger-color);
+    margin-left: 3px;
+}
+
+/* Status Pills */
+.status-pill {
+    display: inline-block;
+    padding: 0.35em 0.65em;
+    font-size: 0.75em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 50rem;
+}
+
+.status-active {
+    color: #fff;
+    background-color: var(--success-color);
+}
+
+.status-draft {
+    color: #212529;
+    background-color: var(--warning-color);
+}
+
+.status-completed {
+    color: #fff;
+    background-color: var(--info-color);
+}
+
+.status-cancelled {
+    color: #fff;
+    background-color: var(--secondary-color);
+}
+
+/* Navigation */
+.navbar {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: var(--primary-color) !important;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link:focus {
+    color: white;
+}
+
+/* Tables */
+.table thead th {
+    background-color: var(--primary-light);
+    border-color: var(--border-color);
+    color: var(--secondary-color);
+    font-weight: 600;
+}
+
+/* Progress bars */
+.progress-bar {
+    background-color: var(--primary-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .navbar-brand {
+        font-size: 1.2rem;
+    }
+    
+    h1 {
+        font-size: 1.8rem;
+    }
+    
+    .card-deck .card {
+        margin-bottom: 15px;
+    }
+    
+    .dashboard-card {
+        margin-bottom: 1rem;
+    }
+} 
