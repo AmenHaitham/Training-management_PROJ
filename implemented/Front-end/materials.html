@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Training Management System - Materials Management">
+  <title>Materials Management | TMS Admin</title>
+  
+  <!-- Preload critical resources -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" as="style">
+  <link rel="preload" href="Css/dashboard.css" as="style">
+  <link rel="preload" href="Css/materials.css" as="style">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" 
+        integrity="sha512-Fo3rlrZj/k7ujTnHg4CGR2D7kSs0v4LLanw2qksYuRlEzO+tcaEPQogQ0KaoGN26/zrn20ImR1DfuLWnOo7aBA==" 
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="Css/dashboard.css">
+  <link rel="stylesheet" href="Css/materials.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="assets/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <!-- Skip to content link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  
+  <!-- Sidebar Navigation -->
+  <nav class="sidebar" aria-label="Main navigation">
+    <div class="sidebar-header">
+      <h1 class="sr-only">Training Management System</h1>
+      <h2>TMS Admin</h2>
+    </div>
+    
+    <div class="sidebar-menu">
+      <h3 class="sidebar-section-title">Main</h3>
+      <ul>
+        <li><a href="dashboard.html" aria-label="Dashboard"><i class="fas fa-tachometer-alt" aria-hidden="true"></i><span>Dashboard</span></a></li>
+      </ul>
+      
+      <h3 class="sidebar-section-title">Management</h3>
+      <ul>
+        <li><a href="users.html" aria-label="Users Management"><i class="fas fa-users" aria-hidden="true"></i><span>Users Management</span></a></li>
+        <li><a href="trainings.html" aria-label="Trainings Management"><i class="fas fa-graduation-cap" aria-hidden="true"></i><span>Trainings Management</span></a></li>
+        <li><a href="room.html" aria-label="Rooms Management"><i class="fas fa-door-open" aria-hidden="true"></i><span>Rooms Management</span></a></li>
+        <li><a href="courses.html" aria-label="Courses Management"><i class="fas fa-book" aria-hidden="true"></i><span>Courses Management</span></a></li>
+        <li><a href="training-courses.html" aria-label="Training Courses"><i class="fas fa-project-diagram" aria-hidden="true"></i><span>Training Courses</span></a></li>
+        <li><a href="sessions.html" aria-label="Sessions Management"><i class="fas fa-calendar-alt" aria-hidden="true"></i><span>Sessions Management</span></a></li>
+        <li class="active"><a href="materials.html" aria-current="page" aria-label="Materials Management"><i class="fas fa-file-alt" aria-hidden="true"></i><span>Materials Management</span></a></li>
+        <li><a href="enrollments.html" aria-label="Enrollment Management"><i class="fas fa-user-plus" aria-hidden="true"></i><span>Enrollment Management</span></a></li>
+        <li><a href="feedbacks.html" aria-label="Feedbacks Management"><i class="fas fa-comment" aria-hidden="true"></i><span>Feedbacks Management</span></a></li>
+        <li><a href="certificates.html" aria-label="Certificates Management"><i class="fas fa-certificate" aria-hidden="true"></i><span>Certificates Management</span></a></li>
+        <li><a href="attendances.html" aria-label="Attendance Management"><i class="fas fa-clipboard-check" aria-hidden="true"></i><span>Attendance Management</span></a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <header class="page-header">
+      <h1>Materials Management</h1>
+<br>
+
+    </header>
+
+    <!-- Materials Management Tools -->
+    <section class="management-tools" aria-label="Materials management tools">
+      <div class="search-filter">
+        <div class="search-box">
+          <label for="material-search" class="sr-only">Search materials</label>
+          <i class="fas fa-search" aria-hidden="true"></i>
+          <input type="search" id="material-search" placeholder="Search materials..." aria-label="Search materials">
+        </div>
+        
+        <div class="filter-group">
+          <label for="session-filter" class="sr-only">Filter by session</label>
+          <select id="session-filter" aria-label="Filter by session">
+            <option value="">All Sessions</option>
+            <!-- Will be populated by JavaScript -->
+          </select>
+        </div>
+        
+        <div class="filter-group">
+          <label for="type-filter" class="sr-only">Filter by type</label>
+          <select id="type-filter" aria-label="Filter by material type">
+            <option value="">All Types</option>
+            <option value="PDF">PDF</option>
+            <option value="DOC">Word</option>
+            <option value="PPT">PowerPoint</option>
+            <option value="VIDEO">Video</option>
+            <option value="OTHER">Other</option>
+          </select>
+        </div>
+      </div>
+      
+      <button id="add-material-btn" class="btn-primary" aria-label="Add new material">
+        <i class="fas fa-plus" aria-hidden="true"></i> Add New Material
+      </button>
+    </section>
+
+    <!-- Materials Table -->
+    <section class="table-container" aria-label="Materials list">
+      <div class="table-responsive">
+        <table id="materials-table" class="data-table">
+          <caption class="sr-only">List of training materials</caption>
+          <thead>
+            <tr>
+              <th scope="col">Title</th>
+              <th scope="col">Description</th>
+              <th scope="col">Session</th>
+              <th scope="col">Size</th>
+              <th scope="col">Uploaded At</th>
+              <th scope="col" class="actions-column">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Will be populated by JavaScript -->
+            <tr class="empty-state">
+              <td colspan="6">No materials found. Click "Add New Material" to upload your first material.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="table-footer">
+        <div class="pagination-info" id="pagination-info" aria-live="polite">Showing 0 of 0 materials</div>
+        <div class="pagination-controls">
+          <button id="prev-page" class="pagination-btn" disabled aria-label="Previous page">
+            <i class="fas fa-chevron-left" aria-hidden="true"></i>
+          </button>
+          <span id="page-indicator" aria-live="polite">1</span>
+          <button id="next-page" class="pagination-btn" aria-label="Next page">
+            <i class="fas fa-chevron-right" aria-hidden="true"></i>
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Add/Edit Material Modal -->
+  <div class="modal" id="material-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modal-title">
+    <div class="modal-overlay close-modal" tabindex="-1"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modal-title">Add New Material</h2>
+        <button class="close-modal" aria-label="Close modal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <form id="material-form" enctype="multipart/form-data" novalidate>
+          <input type="hidden" id="material-id">
+          
+          <div class="form-group">
+            <label for="title">Title <span class="required">*</span></label>
+            <input type="text" id="title" required aria-required="true">
+            <div class="error-message" id="title-error"></div>
+          </div>
+          
+          <div class="form-group">
+            <label for="description">Description</label>
+            <textarea id="description" rows="3"></textarea>
+          </div>
+          
+          <div class="form-group">
+            <label for="session">Session <span class="required">*</span></label>
+            <select id="session" required aria-required="true">
+              <option value="">Select Session</option>
+              <!-- Will be populated by JavaScript -->
+            </select>
+            <div class="error-message" id="session-error"></div>
+          </div>
+          
+          <div class="form-group">
+            <label for="file">File <span class="required">*</span></label>
+            <div class="file-upload">
+              <input type="file" id="file" accept=".pdf,.doc,.docx,.ppt,.pptx,.jpg,.jpeg,.png,.mp4" aria-required="true">
+              <label for="file" class="file-upload-label">
+                <i class="fas fa-cloud-upload-alt" aria-hidden="true"></i>
+                <span>Choose a file or drag it here</span>
+              </label>
+            </div>
+            <small class="file-info" id="file-info">Maximum file size: 25MB</small>
+            <div class="error-message" id="file-error"></div>
+          </div>
+        </form>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-secondary close-modal">Cancel</button>
+        <button id="save-material" class="btn-primary">Save Material</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Confirmation Modal -->
+  <div class="modal" id="confirm-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="confirm-title">
+    <div class="modal-overlay close-modal" tabindex="-1"></div>
+    <div class="modal-content small">
+      <div class="modal-header">
+        <h2 id="confirm-title">Confirm Action</h2>
+        <button class="close-modal" aria-label="Close modal">&times;</button>
+      </div>
+      
+      <div class="modal-body">
+        <p id="confirm-message">Are you sure you want to perform this action?</p>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn-secondary close-modal">Cancel</button>
+        <button id="confirm-action" class="btn-danger">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast-container" class="toast-container" aria-live="polite"></div>
+
+  <!-- JavaScript -->
+  <script src="Js/materials.js" defer></script>
+</body>
+</html>
