@@ -1,0 +1,320 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import 'base.css';
+
+/* Layout */
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: var(--neutral-200);
+}
+
+/* Sidebar */
+.sidebar {
+    width: 280px;
+    background-color: var(--neutral-100);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-6);
+    position: fixed;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding-bottom: var(--spacing-6);
+    border-bottom: 1px solid var(--neutral-300);
+    margin-bottom: var(--spacing-6);
+}
+
+.sidebar-header h3 {
+    color: var(--primary-color);
+    font-size: var(--font-size-xl);
+    margin: 0;
+}
+
+.sidebar-menu h4 {
+    color: var(--neutral-700);
+    font-size: var(--font-size-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: var(--spacing-6) 0 var(--spacing-3);
+}
+
+.sidebar-menu ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.sidebar-menu li {
+    margin-bottom: var(--spacing-2);
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: var(--spacing-3);
+    color: var(--neutral-700);
+    text-decoration: none;
+    border-radius: var(--radius-md);
+    transition: all 0.2s ease;
+}
+
+.sidebar-menu a:hover {
+    background-color: var(--neutral-200);
+    color: var(--primary-color);
+}
+
+.sidebar-menu li.active a {
+    background-color: var(--primary-color);
+    color: var(--neutral-100);
+}
+
+.sidebar-menu i {
+    width: 20px;
+    margin-right: var(--spacing-3);
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    margin-left: 280px;
+    padding: var(--spacing-6);
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-8);
+}
+
+.header h2 {
+    margin: 0;
+    color: var(--secondary-color);
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    color: var(--neutral-700);
+}
+
+/* Users Table */
+.users-table-container {
+    background-color: var(--neutral-100);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    padding: var(--spacing-6);
+    margin-bottom: var(--spacing-8);
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-6);
+}
+
+.table-header h3 {
+    margin: 0;
+    color: var(--secondary-color);
+}
+
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-3);
+    background-color: var(--neutral-200);
+    padding: var(--spacing-2) var(--spacing-4);
+    border-radius: var(--radius-md);
+    width: 300px;
+}
+
+.search-box input {
+    border: none;
+    background: none;
+    outline: none;
+    width: 100%;
+    color: var(--neutral-800);
+}
+
+.search-box i {
+    color: var(--neutral-600);
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table th {
+    text-align: left;
+    padding: var(--spacing-4);
+    color: var(--neutral-700);
+    font-weight: 600;
+    border-bottom: 2px solid var(--neutral-300);
+}
+
+.table td {
+    padding: var(--spacing-4);
+    border-bottom: 1px solid var(--neutral-300);
+    color: var(--neutral-800);
+}
+
+.table tr:hover {
+    background-color: var(--neutral-200);
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: var(--spacing-2);
+}
+
+.btn-icon {
+    width: 32px;
+    height: 32px;
+    border-radius: var(--radius-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--neutral-100);
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-edit {
+    background-color: var(--secondary-color);
+}
+
+.btn-edit:hover {
+    background-color: var(--secondary-dark);
+}
+
+.btn-delete {
+    background-color: var(--primary-color);
+}
+
+.btn-delete:hover {
+    background-color: var(--primary-dark);
+}
+
+/* Add User Modal */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--neutral-100);
+    padding: var(--spacing-6);
+    border-radius: var(--radius-lg);
+    width: 500px;
+    max-width: 90%;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-6);
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: var(--secondary-color);
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    color: var(--neutral-600);
+    cursor: pointer;
+    font-size: var(--font-size-xl);
+}
+
+.form-group {
+    margin-bottom: var(--spacing-4);
+}
+
+.form-label {
+    display: block;
+    margin-bottom: var(--spacing-2);
+    color: var(--neutral-700);
+    font-weight: 500;
+}
+
+.form-control {
+    width: 100%;
+    padding: var(--spacing-2) var(--spacing-3);
+    border: 1px solid var(--neutral-400);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-base);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(230, 57, 70, 0.1);
+}
+
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: var(--spacing-3);
+    margin-top: var(--spacing-6);
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 240px;
+    }
+    
+    .main-content {
+        margin-left: 240px;
+    }
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+    }
+    
+    .main-content {
+        margin-left: 0;
+    }
+    
+    body {
+        flex-direction: column;
+    }
+    
+    .table-header {
+        flex-direction: column;
+        gap: var(--spacing-4);
+    }
+    
+    .search-box {
+        width: 100%;
+    }
+    
+    .table {
+        display: block;
+        overflow-x: auto;
+    }
+}

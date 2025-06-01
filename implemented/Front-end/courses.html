@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Courses | Training Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Css/userDashboard.css">
+    <link rel="stylesheet" href="Css/courses.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Sidebar Navigation (same as dashboard) -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="logo">TMS</h2>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <ul>
+                    <li>
+                        <a href="dashboard.html">
+                            <i class="fas fa-home"></i>
+                            <span>Dashboard</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="schedule.html">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>My Schedule</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="courses.html">
+                            <i class="fas fa-book"></i>
+                            <span>Courses</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Materials</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-certificate"></i>
+                            <span>Certificates</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>Progress</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>Settings</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=John+Doe&background=random" alt="User Avatar">
+                    </div>
+                    <div class="user-info">
+                        <h4>John Doe</h4>
+                        <p>Trainee</p>
+                    </div>
+                </div>
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="main-header">
+                <h1>My Courses</h1>
+                <div class="header-actions">
+                    <div class="search-bar">
+                        <input type="text" placeholder="Search courses...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <div class="dashboard-content">
+                <!-- Courses Filters -->
+                <section class="courses-filters card">
+                    <div class="filter-options">
+                        <div class="filter-group">
+                            <label for="statusFilter">Status</label>
+                            <select id="statusFilter">
+                                <option value="all">All Courses</option>
+                                <option value="active">Active</option>
+                                <option value="upcoming">Upcoming</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <label for="categoryFilter">Category</label>
+                            <select id="categoryFilter">
+                                <option value="all">All Categories</option>
+                                <option value="development">Development</option>
+                                <option value="data-science">Data Science</option>
+                                <option value="security">Security</option>
+                                <option value="design">Design</option>
+                            </select>
+                        </div>
+                        <button class="btn primary" id="applyFilters">Apply Filters</button>
+                        <button class="btn outline" id="resetFilters">Reset</button>
+                    </div>
+                </section>
+
+                <!-- Courses View Toggle -->
+                <div class="view-toggle">
+                    <button class="btn toggle-btn active" data-view="grid">
+                        <i class="fas fa-th"></i> Grid View
+                    </button>
+                    <button class="btn toggle-btn" data-view="list">
+                        <i class="fas fa-list"></i> List View
+                    </button>
+                </div>
+
+                <!-- Courses Grid View -->
+                <section class="courses-grid-view" id="gridView">
+                    <div class="grid-container">
+                        <!-- Course Card -->
+                        <div class="course-card card">
+                            <div class="course-badge active">Active</div>
+                            <div class="course-image">
+                                <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Full Stack Development">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-category development">Development</div>
+                                <h3>Full Stack Development</h3>
+                                <p class="course-description">Master modern web development with JavaScript, React, Node.js, and databases.</p>
+                                <div class="course-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>Sarah Smith</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Jun 1 - Jul 15</span>
+                                    </div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 65%"></div>
+                                    </div>
+                                    <span class="progress-text">65% Complete</span>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">View Details</button>
+                                <button class="btn primary">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Card -->
+                        <div class="course-card card">
+                            <div class="course-badge upcoming">Upcoming</div>
+                            <div class="course-image">
+                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Data Science Fundamentals">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-category data-science">Data Science</div>
+                                <h3>Data Science Fundamentals</h3>
+                                <p class="course-description">Learn Python, data analysis, visualization, and machine learning basics.</p>
+                                <div class="course-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>Michael Brown</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Jul 1 - Aug 20</span>
+                                    </div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="progress-text">Starts in 2 weeks</span>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">View Details</button>
+                                <button class="btn primary" disabled>Coming Soon</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Card -->
+                        <div class="course-card card">
+                            <div class="course-badge completed">Completed</div>
+                            <div class="course-image">
+                                <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="JavaScript Fundamentals">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-category development">Development</div>
+                                <h3>JavaScript Fundamentals</h3>
+                                <p class="course-description">Learn core JavaScript concepts, ES6+ features, and DOM manipulation.</p>
+                                <div class="course-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>Sarah Smith</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Apr 1 - May 10</span>
+                                    </div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 100%"></div>
+                                    </div>
+                                    <span class="progress-text">Completed May 10</span>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">View Details</button>
+                                <button class="btn primary">View Certificate</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Card -->
+                        <div class="course-card card">
+                            <div class="course-badge available">Available</div>
+                            <div class="course-image">
+                                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Web Security">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-category security">Security</div>
+                                <h3>Web Security</h3>
+                                <p class="course-description">Learn about common web vulnerabilities and how to secure your applications.</p>
+                                <div class="course-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>David Wilson</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Aug 5 - Sep 15</span>
+                                    </div>
+                                </div>
+                                <div class="course-progress">
+                                    <div class="progress-bar">
+                                        <div class="progress-fill" style="width: 0%"></div>
+                                    </div>
+                                    <span class="progress-text">Enrollment Open</span>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">View Details</button>
+                                <button class="btn primary">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="pagination">
+                        <button class="btn outline" disabled>
+                            <i class="fas fa-chevron-left"></i> Previous
+                        </button>
+                        <span class="page-info">Page 1 of 2</span>
+                        <button class="btn outline">
+                            Next <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </section>
+                
+                <!-- Courses List View -->
+                <section class="courses-list-view card hidden" id="listView">
+                    <div class="card-header">
+                        <h2>My Courses</h2>
+                        <div class="view-actions">
+                            <button class="btn icon" id="printCourses">
+                                <i class="fas fa-print"></i>
+                            </button>
+                            <button class="btn icon" id="exportCourses">
+                                <i class="fas fa-download"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="courses-list">
+                        <!-- Course Item -->
+                        <div class="course-item">
+                            <div class="course-status">
+                                <span class="status-badge active">Active</span>
+                            </div>
+                            <div class="course-main">
+                                <div class="course-image">
+                                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Full Stack Development">
+                                </div>
+                                <div class="course-details">
+                                    <div class="course-header">
+                                        <h3>Full Stack Development</h3>
+                                        <span class="course-category development">Development</span>
+                                    </div>
+                                    <p class="course-description">Master modern web development with JavaScript, React, Node.js, and databases.</p>
+                                    <div class="course-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>Sarah Smith</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-calendar"></i>
+                                            <span>Jun 1 - Jul 15</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>12/20 sessions completed</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-circle" data-progress="65">
+                                    <svg class="progress-ring" width="60" height="60">
+                                        <circle class="progress-ring-circle" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+                                    </svg>
+                                    <span class="progress-value">65%</span>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">Details</button>
+                                <button class="btn primary">Continue</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Item -->
+                        <div class="course-item">
+                            <div class="course-status">
+                                <span class="status-badge upcoming">Upcoming</span>
+                            </div>
+                            <div class="course-main">
+                                <div class="course-image">
+                                    <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="Data Science Fundamentals">
+                                </div>
+                                <div class="course-details">
+                                    <div class="course-header">
+                                        <h3>Data Science Fundamentals</h3>
+                                        <span class="course-category data-science">Data Science</span>
+                                    </div>
+                                    <p class="course-description">Learn Python, data analysis, visualization, and machine learning basics.</p>
+                                    <div class="course-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>Michael Brown</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-calendar"></i>
+                                            <span>Jul 1 - Aug 20</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-clock"></i>
+                                            <span>Starts in 2 weeks</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-circle" data-progress="0">
+                                    <svg class="progress-ring" width="60" height="60">
+                                        <circle class="progress-ring-circle" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+                                    </svg>
+                                    <span class="progress-value">0%</span>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">Details</button>
+                                <button class="btn primary" disabled>Coming Soon</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Item -->
+                        <div class="course-item">
+                            <div class="course-status">
+                                <span class="status-badge completed">Completed</span>
+                            </div>
+                            <div class="course-main">
+                                <div class="course-image">
+                                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=200&q=80" alt="JavaScript Fundamentals">
+                                </div>
+                                <div class="course-details">
+                                    <div class="course-header">
+                                        <h3>JavaScript Fundamentals</h3>
+                                        <span class="course-category development">Development</span>
+                                    </div>
+                                    <p class="course-description">Learn core JavaScript concepts, ES6+ features, and DOM manipulation.</p>
+                                    <div class="course-meta">
+                                        <div class="meta-item">
+                                            <i class="fas fa-user"></i>
+                                            <span>Sarah Smith</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-calendar"></i>
+                                            <span>Apr 1 - May 10</span>
+                                        </div>
+                                        <div class="meta-item">
+                                            <i class="fas fa-check-circle"></i>
+                                            <span>Completed May 10</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-progress">
+                                <div class="progress-circle" data-progress="100">
+                                    <svg class="progress-ring" width="60" height="60">
+                                        <circle class="progress-ring-circle" stroke-width="4" fill="transparent" r="26" cx="30" cy="30"/>
+                                    </svg>
+                                    <span class="progress-value">100%</span>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">Details</button>
+                                <button class="btn primary">View Certificate</button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card-footer">
+                        <div class="pagination">
+                            <button class="btn outline" disabled>
+                                <i class="fas fa-chevron-left"></i> Previous
+                            </button>
+                            <span class="page-info">Page 1 of 2</span>
+                            <button class="btn outline">
+                                Next <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                
+                <!-- Available Courses Section -->
+                <section class="available-courses card">
+                    <div class="card-header">
+                        <h2>Available Courses</h2>
+                        <a href="#" class="view-all">View All</a>
+                    </div>
+                    
+                    <div class="grid-container">
+                        <!-- Course Card -->
+                        <div class="course-card card">
+                            <div class="course-badge available">Available</div>
+                            <div class="course-image">
+                                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Web Security">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-category security">Security</div>
+                                <h3>Web Security</h3>
+                                <p class="course-description">Learn about common web vulnerabilities and how to secure your applications.</p>
+                                <div class="course-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>David Wilson</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Aug 5 - Sep 15</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">View Details</button>
+                                <button class="btn primary">Enroll Now</button>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Card -->
+                        <div class="course-card card">
+                            <div class="course-badge available">Available</div>
+                            <div class="course-image">
+                                <img src="https://images.unsplash.com/photo-1547658719-da2b51169166?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="UI/UX Design">
+                            </div>
+                            <div class="course-content">
+                                <div class="course-category design">Design</div>
+                                <h3>UI/UX Design</h3>
+                                <p class="course-description">Learn principles of user interface and experience design for modern applications.</p>
+                                <div class="course-meta">
+                                    <div class="meta-item">
+                                        <i class="fas fa-user"></i>
+                                        <span>Emily Johnson</span>
+                                    </div>
+                                    <div class="meta-item">
+                                        <i class="fas fa-calendar"></i>
+                                        <span>Sep 1 - Oct 10</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="course-actions">
+                                <button class="btn outline">View Details</button>
+                                <button class="btn primary">Enroll Now</button>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Course Details Modal (hidden by default) -->
+    <div class="modal hidden" id="courseModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3>Course Details</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="course-detail-header">
+                    <div class="course-image">
+                        <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80" alt="Full Stack Development">
+                    </div>
+                    <div class="course-info">
+                        <div class="course-status">
+                            <span class="status-badge active">Active</span>
+                            <span class="course-category development">Development</span>
+                        </div>
+                        <h2>Full Stack Development</h2>
+                        <p class="course-trainer"><i class="fas fa-user"></i> Instructor: Sarah Smith</p>
+                        <p class="course-dates"><i class="fas fa-calendar"></i> Jun 1, 2023 - Jul 15, 2023</p>
+                        <div class="course-progress">
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <span class="progress-text">65% Complete (12/20 sessions)</span>
+                        </div>
+                        <div class="course-actions">
+                            <button class="btn outline"><i class="fas fa-file-download"></i> Syllabus</button>
+                            <button class="btn primary">Continue Learning</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="course-tabs">
+                    <button class="tab-btn active" data-tab="overview">Overview</button>
+                    <button class="tab-btn" data-tab="curriculum">Curriculum</button>
+                    <button class="tab-btn" data-tab="materials">Materials</button>
+                    <button class="tab-btn" data-tab="feedback">Feedback</button>
+                </div>
+                
+                <div class="tab-content active" id="overview">
+                    <h3>About This Course</h3>
+                    <p>Master modern web development with this comprehensive full stack course. You'll learn to build complete web applications using JavaScript, React for the frontend, Node.js for the backend, and MongoDB for the database.</p>
+                    
+                    <h3>What You'll Learn</h3>
+                    <ul class="learning-list">
+                        <li><i class="fas fa-check"></i> Build responsive frontends with React</li>
+                        <li><i class="fas fa-check"></i> Create RESTful APIs with Node.js and Express</li>
+                        <li><i class="fas fa-check"></i> Work with MongoDB and Mongoose</li>
+                        <li><i class="fas fa-check"></i> Implement user authentication and authorization</li>
+                        <li><i class="fas fa-check"></i> Deploy applications to the cloud</li>
+                    </ul>
+                    
+                    <h3>Prerequisites</h3>
+                    <p>Basic understanding of HTML, CSS, and JavaScript is recommended.</p>
+                </div>
+                
+                <div class="tab-content" id="curriculum">
+                    <div class="session-list">
+                        <div class="session-item completed">
+                            <div class="session-number">1</div>
+                            <div class="session-details">
+                                <h4>Introduction to Full Stack Development</h4>
+                                <p class="session-date">Jun 1, 2023 • 2h</p>
+                            </div>
+                            <div class="session-status">
+                                <span class="status-badge completed">Completed</span>
+                            </div>
+                            <div class="session-actions">
+                                <button class="btn icon"><i class="fas fa-file-download"></i></button>
+                            </div>
+                        </div>
+                        
+                        <div class="session-item completed">
+                            <div class="session-number">2</div>
+                            <div class="session-details">
+                                <h4>JavaScript Fundamentals</h4>
+                                <p class="session-date">Jun 3, 2023 • 2h</p>
+                            </div>
+                            <div class="session-status">
+                                <span class="status-badge completed">Completed</span>
+                            </div>
+                            <div class="session-actions">
+                                <button class="btn icon"><i class="fas fa-file-download"></i></button>
+                            </div>
+                        </div>
+                        
+                        <!-- More sessions would be listed here -->
+                        
+                        <div class="session-item upcoming">
+                            <div class="session-number">13</div>
+                            <div class="session-details">
+                                <h4>Authentication with JWT</h4>
+                                <p class="session-date">Jun 29, 2023 • 2h</p>
+                            </div>
+                            <div class="session-status">
+                                <span class="status-badge upcoming">Upcoming</span>
+                            </div>
+                            <div class="session-actions">
+                                <button class="btn icon" disabled><i class="fas fa-calendar-plus"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="materials">
+                    <div class="materials-list">
+                        <div class="material-item">
+                            <div class="material-icon pdf">
+                                <i class="fas fa-file-pdf"></i>
+                            </div>
+                            <div class="material-details">
+                                <h4>Full Stack Development Syllabus</h4>
+                                <p class="material-meta">Uploaded: May 28, 2023 • 1.2 MB</p>
+                            </div>
+                            <div class="material-actions">
+                                <button class="btn icon">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="material-item">
+                            <div class="material-icon ppt">
+                                <i class="fas fa-file-powerpoint"></i>
+                            </div>
+                            <div class="material-details">
+                                <h4>React Fundamentals Slides</h4>
+                                <p class="material-meta">Uploaded: Jun 2, 2023 • 3.5 MB</p>
+                            </div>
+                            <div class="material-actions">
+                                <button class="btn icon">
+                                    <i class="fas fa-download"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="feedback">
+                    <div class="feedback-form">
+                        <h3>Course Feedback</h3>
+                        <p>Please share your experience with this course to help us improve.</p>
+                        
+                        <form>
+                            <div class="form-group">
+                                <label>Overall Rating</label>
+                                <div class="rating-stars">
+                                    <input type="radio" id="course-star5" name="course-rating" value="5">
+                                    <label for="course-star5"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="course-star4" name="course-rating" value="4">
+                                    <label for="course-star4"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="course-star3" name="course-rating" value="3">
+                                    <label for="course-star3"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="course-star2" name="course-rating" value="2">
+                                    <label for="course-star2"><i class="fas fa-star"></i></label>
+                                    <input type="radio" id="course-star1" name="course-rating" value="1">
+                                    <label for="course-star1"><i class="fas fa-star"></i></label>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="feedback-comment">Your Feedback</label>
+                                <textarea id="feedback-comment" rows="4" placeholder="What did you like about this course? How can we improve?"></textarea>
+                            </div>
+                            
+                            <div class="form-actions">
+                                <button type="submit" class="btn primary">Submit Feedback</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Js/userDashboard.js"></script>
+    <script src="Js/courses.js"></script>
+</body>
+</html>
