@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchSessions() {
-        fetch('http://localhost:8080/tms/session')
+        fetch('http://localhost:1010/tms/session')
             .then(res => res.json())
             .then(data => {
                 allSessions = data;
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchMaterials() {
-        fetch('http://localhost:8080/tms/materials')
+        fetch('http://localhost:1010/tms/materials')
             .then(res => res.json())
             .then(data => {
                 allMaterials = data;
@@ -233,7 +233,7 @@ document.addEventListener('DOMContentLoaded', function () {
         formData.append('sessionId', sessionId);
         if (file) formData.append('file', file);
 
-        const url = isEdit ? `http://localhost:8080/tms/materials/${materialId}` : '/tms/materials';
+        const url = isEdit ? `http://localhost:1010/tms/materials/${materialId}` : '/tms/materials';
         const method = isEdit ? 'PUT' : 'POST';
 
         fetch(url, { method, body: formData })
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function deleteMaterial(id) {
-        fetch(`http://localhost:8080/tms/materials/${id}`, { method: 'DELETE' })
+        fetch(`http://localhost:1010/tms/materials/${id}`, { method: 'DELETE' })
             .then(res => res.ok ? res.json() : Promise.reject())
             .then(() => {
                 showToast('Material deleted', 'success');
@@ -266,12 +266,12 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function viewMaterial(id) {
-        window.open(`http://localhost:8080/tms/materials/${id}/view`, '_blank');
+        window.open(`http://localhost:1010/tms/materials/${id}/view`, '_blank');
     }
 
     function downloadMaterial(id) {
         // ✅ CORRECTED URL HERE:
-        window.location.href = `http://localhost:8080/tms/materials/${id}/file`;
+        window.location.href = `http://localhost:1010/tms/materials/${id}/file`;
     }
 
     function formatFileSize(bytes) {

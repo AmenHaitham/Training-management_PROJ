@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchRooms() {
         showLoading(true);
-        fetch('http://localhost:8080/tms/rooms')
+        fetch('http://localhost:1010/tms/rooms')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -286,7 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         setButtonLoading('confirm-action', true);
 
-        fetch(`http://localhost:8080/tms/rooms/${roomId}/status`, {
+        fetch(`http://localhost:1010/tms/rooms/${roomId}/status`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
@@ -354,7 +354,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const url = isEditMode ? `http://localhost:8080/tms/rooms/${roomId}` : 'http://localhost:8080/tms/rooms';
+        const url = isEditMode ? `http://localhost:1010/tms/rooms/${roomId}` : 'http://localhost:1010/tms/rooms';
         const method = isEditMode ? 'PUT' : 'POST';
         
         setButtonLoading('save-room', true);
@@ -387,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function deleteRoom(roomId) {
         setButtonLoading('confirm-action', true);
 
-        fetch(`http://localhost:8080/tms/rooms/${roomId}`, {
+        fetch(`http://localhost:1010/tms/rooms/${roomId}`, {
             method: 'DELETE'
         })
         .then(response => {

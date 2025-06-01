@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCourses() {
-        return fetch('http://localhost:8080/tms/courses')
+        return fetch('http://localhost:1010/tms/courses')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainers() {
-        return fetch('http://localhost:8080/tms/users')
+        return fetch('http://localhost:1010/tms/users')
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -295,7 +295,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const url = isEditMode ? `http://localhost:8080/tms/courses/${courseId}` : 'http://localhost:8080/tms/courses';
+        const url = isEditMode ? `http://localhost:1010/tms/courses/${courseId}` : 'http://localhost:1010/tms/courses';
         const method = isEditMode ? 'PUT' : 'POST';
         
         setButtonLoading('save-course', true);
@@ -328,7 +328,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function deleteCourse(courseId) {
         setButtonLoading('confirm-action', true);
 
-        fetch(`http://localhost:8080/tms/courses/${courseId}`, {
+        fetch(`http://localhost:1010/tms/courses/${courseId}`, {
             method: 'DELETE'
         })
         .then(response => {

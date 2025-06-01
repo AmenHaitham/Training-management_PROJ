@@ -80,18 +80,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchSessions() {
-        fetch('http://localhost:8080/tms/sessions')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(sessions => {
-                allSessions = sessions;
-                filteredSessions = [...sessions];
-                renderSessionsTable();
-                updatePagination();
+        fetch('http://localhost:1010/tms/sessions')
+            .then(response => response.json())
+            .then(data => {
+                allSessions = data;
+                totalSessions = data.length;
+                filterSessions();
             })
             .catch(error => {
                 console.error('Error fetching sessions:', error);
@@ -100,7 +94,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainingCourses() {
-        fetch('http://localhost:8080/tms/training-courses')
+        fetch('http://localhost:1010/tms/training-courses')
             .then(response => response.json())
             .then(data => {
                 allTrainingCourses = data;
@@ -331,7 +325,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const isEditMode = sessionId !== '';
         
         const sessionData = {
-            trainingCourseId: {id: document.getElementById('training-course').value},
+            trainingCourseId: {id:document.getElementById('training-course').value},
             sessionDate: document.getElementById('session-date').value,
             startTime: document.getElementById('start-time').value,
             endTime: document.getElementById('end-time').value,
@@ -351,7 +345,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const url = isEditMode ? `http://localhost:8080/tms/sessions/${sessionId}` : 'http://localhost:8080/tms/sessions';
+        const url = isEditMode ? `http://localhost:1010/tms/sessions/${sessionId}` : 'http://localhost:1010/tms/session';
         const method = isEditMode ? 'PUT' : 'POST';
         
         fetch(url, {
@@ -363,7 +357,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(response => {
             if (!response.ok) {
-                return response.json().then(err => { throw new Error(err.message || 'Failed to save session'); });
+                return response.json().then(err => { throw err; });
             }
             return response.json();
         })
@@ -379,12 +373,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteSession(sessionId) {
-        fetch(`http://localhost:8080/tms/sessions/${sessionId}`, {
+        fetch(`http://localhost:1010/tms/sessions/${sessionId}`, {
             method: 'DELETE'
         })
         .then(response => {
             if (!response.ok) {
-                return response.json().then(err => { throw new Error(err.message || 'Failed to delete session'); });
+                throw new Error('Failed to delete session');
             }
             return response.json();
         })
@@ -394,7 +388,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Error deleting session:', error);
-            showToast(error.message || 'Failed to delete session', 'error');
+            showToast('Failed to delete session', 'error');
         });
     }
 
@@ -462,47 +456,54 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function showToast(message, type = 'info') {
-        const container = document.querySelector('.toast-container') || createToastContainer();
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        
-        // Icons for different toast types (using Font Awesome classes)
-        const icons = {
-            success: 'fas fa-check-circle',
-            error: 'fas fa-exclamation-circle',
-            info: 'fas fa-info-circle',
-            warning: 'fas fa-exclamation-triangle'
-        };
-        
-        toast.innerHTML = `
-            <i class="toast-icon ${icons[type] || icons.info}"></i>
-            <span class="toast-message">${message}</span>
-            <span class="close-toast">&times;</span>
-        `;
-        
-        container.appendChild(toast);
-        
-        // Show the toast
-        setTimeout(() => toast.classList.add('show'), 100);
-        
-        // Close button functionality
-        toast.querySelector('.close-toast').addEventListener('click', () => {
-            removeToast(toast);
-        });
-        
-        // Auto-remove after 5 seconds
-        setTimeout(() => removeToast(toast), 5000);
+        // Implement your toast notification system or use an existing one
+        console.log(`${type.toUpperCase()}: ${message}`);
+        alert(`${type.toUpperCase()}: ${message}`); // Simple fallback
     }
 
-    function createToastContainer() {
-        const container = document.createElement('div');
-        container.className = 'toast-container';
-        document.body.appendChild(container);
-        return container;
-    }
+function showToast(message, type = 'info') {
+    const container = document.querySelector('.toast-container') || createToastContainer();
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    
+    // Icons for different toast types (using Font Awesome classes)
+    const icons = {
+        success: 'fas fa-check-circle',
+        error: 'fas fa-exclamation-circle',
+        info: 'fas fa-info-circle',
+        warning: 'fas fa-exclamation-triangle'
+    };
+    
+    toast.innerHTML = `
+        <i class="toast-icon ${icons[type] || icons.info}"></i>
+        <span class="toast-message">${message}</span>
+        <span class="close-toast">&times;</span>
+    `;
+    
+    container.appendChild(toast);
+    
+    // Show the toast
+    setTimeout(() => toast.classList.add('show'), 100);
+    
+    // Close button functionality
+    toast.querySelector('.close-toast').addEventListener('click', () => {
+        removeToast(toast);
+    });
+    
+    // Auto-remove after 5 seconds
+    setTimeout(() => removeToast(toast), 5000);
+}
 
-    function removeToast(toast) {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-    }
+function createToastContainer() {
+    const container = document.createElement('div');
+    container.className = 'toast-container';
+    document.body.appendChild(container);
+    return container;
+}
+
+function removeToast(toast) {
+    toast.classList.remove('show');
+    setTimeout(() => toast.remove(), 300);
+}
+
 });

@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function fetchInitialData() {
     Promise.all([
-        fetch('http://localhost:8080/tms/enrollments').then(handleResponse),
-        fetch('http://localhost:8080/tms/trainings').then(handleResponse),
-        fetch('http://localhost:8080/tms/users').then(handleResponse) // Changed from 'users' to 'trainees'
+        fetch('http://localhost:1010/tms/enrollments').then(handleResponse),
+        fetch('http://localhost:1010/tms/trainings').then(handleResponse),
+        fetch('http://localhost:1010/tms/users').then(handleResponse) // Changed from 'users' to 'trainees'
     ])
     .then(([enrollmentsResponse, trainingsResponse, traineesResponse]) => {
         // Handle different possible response structures
@@ -225,7 +225,7 @@ async function handleResponse(response) {
             return showToast('Please select both trainee and training', 'error');
         }
 
-        const base = 'http://localhost:8080/tms';
+        const base = 'http://localhost:1010/tms';
         const url = isEdit ? `${base}/enrollments/${id}` : `${base}/enrollments`;
         const method = isEdit ? 'PUT' : 'POST';
 
@@ -285,7 +285,7 @@ async function handleResponse(response) {
             '<span class="spinner-border spinner-border-sm"></span> Deleting...';
 
         try {
-            const response = await fetch(`http://localhost:8080/tms/enrollments/${id}`, { 
+            const response = await fetch(`http://localhost:1010/tms/enrollments/${id}`, { 
                 method: 'DELETE' 
             });
             

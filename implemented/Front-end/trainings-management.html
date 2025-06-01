@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trainings Management | TMS Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="Css/adminDashboard.css">
+    <link rel="stylesheet" href="Css/room-management.css">
+    <link rel="stylesheet" href="Css/training-courses-management.css">
+</head>
+<body>
+        <!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h3>TMS Admin</h3>
+    </div>
+    <div class="sidebar-menu">
+        <h4>Main</h4>
+        <ul>
+            <li class="active">
+                <a href="adminDashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        </ul>
+        
+        <h4>Management</h4>
+        <ul>
+            <li>
+                <a href="users-management.html">
+                    <i class="fas fa-users"></i>
+                    <span>Users Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="trainings-management.html">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Trainings Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="room-management.html">
+                    <i class="fas fa-door-open"></i>
+                    <span>Rooms Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="courses-management.html">
+                    <i class="fas fa-book"></i>
+                    <span>Courses Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="training-courses-management.html">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Training Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="sessions-management.html">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Sessions Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="materials-management.html">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Materials Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="enrollments-management.html">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Enrollment Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="feedbacks-management.html">
+                    <i class="fas fa-comment"></i>
+                    <span>Feedbacks Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="certificates-management.html">
+                    <i class="fas fa-certificate"></i>
+                    <span>Certificates Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="attendances-management.html">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Attendance Management</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Trainings Management</h2>
+            <div class="user-info">
+                <span>Admin User</span>
+            </div>
+        </div>
+
+        <!-- Trainings Management Tools -->
+        <div class="management-tools">
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="training-search" placeholder="Search trainings...">
+                </div>
+                <select id="status-filter">
+                    <option value="">All Statuses</option>
+                    <option value="AVAILABLE">Available</option>
+                    <option value="UNAVAILABLE">Unavailable</option>
+                    <option value="CANCELED">Canceled</option>
+                    <option value="COMPLETED">Completed</option>
+                    <option value="LIVE">Live</option>
+                </select>
+                <div class="date-range">
+                    <input type="date" id="start-date-filter" placeholder="From date">
+                    <span>to</span>
+                    <input type="date" id="end-date-filter" placeholder="To date">
+                </div>
+            </div>
+            <button id="add-training-btn" class="btn-primary">
+                <i class="fas fa-plus"></i> Add New Training
+            </button>
+        </div>
+
+        <!-- Trainings Table -->
+        <div class="table-container">
+            <table id="trainings-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Room</th>
+                        <th>Dates</th>
+                        <th>Status</th>
+                        <th>Created At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Will be populated by JavaScript -->
+                </tbody>
+            </table>
+            <div class="table-footer">
+                <div class="pagination-info" id="pagination-info"></div>
+                <div class="pagination-controls">
+                    <button id="prev-page" disabled><i class="fas fa-chevron-left"></i></button>
+                    <span id="page-indicator">1</span>
+                    <button id="next-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Add/Edit Training Modal -->
+        <div class="modal" id="training-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Add New Training</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form id="training-form">
+                        <input type="hidden" id="training-id">
+                        <div class="form-group">
+                            <label for="title">Title *</label>
+                            <input type="text" id="title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="description">Description</label>
+                            <textarea id="description" rows="3"></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="start-date">Start Date *</label>
+                                <input type="date" id="start-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="end-date">End Date *</label>
+                                <input type="date" id="end-date" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="room">Room *</label>
+                                <select id="room" required>
+                                    <option value="">Select Room</option>
+                                    <!-- Will be populated by JavaScript -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status *</label>
+                                <select id="status" required>
+                                    <option value="AVAILABLE">Available</option>
+                                    <option value="UNAVAILABLE">Unavailable</option>
+                                    <option value="CANCELED">Canceled</option>
+                                    <option value="COMPLETED">Completed</option>
+                                    <option value="LIVE">Live</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Cancel</button>
+                    <button id="save-training" class="btn-primary">Save Training</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation Modal -->
+        <div class="modal" id="confirm-modal">
+            <div class="modal-content small">
+                <div class="modal-header">
+                    <h3 id="confirm-title">Confirm Action</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p id="confirm-message">Are you sure you want to perform this action?</p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Cancel</button>
+                    <button id="confirm-action" class="btn-primary">Confirm</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Js/training-courses-management.js"></script>
+</body>
+</html>

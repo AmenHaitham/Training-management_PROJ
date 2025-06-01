@@ -64,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     function fetchUsers() {
-        fetch('http://localhost:8080/tms/users')
+        fetch('http://localhost:1010/tms/users')
             .then(handleResponse)
             .then(data => {
                 allUsers = Array.isArray(data) ? data : data.data || data.users || [];
@@ -264,7 +264,7 @@ document.addEventListener('DOMContentLoaded', function () {
             Saving...
         `;
 
-        const url = isEditMode ? `http://localhost:8080/tms/users/${userId}` : 'http://localhost:8080/tms/users';
+        const url = isEditMode ? `http://localhost:1010/tms/users/${userId}` : 'http://localhost:1010/tms/users';
         const method = isEditMode ? 'PUT' : 'POST';
 
         try {
@@ -307,7 +307,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
 
         try {
-            const response = await fetch(`http://localhost:8080/tms/users/${userId}/status`, {
+            const response = await fetch(`http://localhost:1010/tms/users/${userId}/status`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ status: !user.status })
@@ -343,7 +343,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `;
 
         try {
-            const response = await fetch(`http://localhost:8080/tms/users/${userId}`, { 
+            const response = await fetch(`http://localhost:1010/tms/users/${userId}`, { 
                 method: 'DELETE' 
             });
 

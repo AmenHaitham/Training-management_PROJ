@@ -43,13 +43,8 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchSessions() {
-        fetch('http://localhost:8080/tms/sessions')
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
+        fetch('http://localhost:1010/tms/sessions')
+            .then(response => response.json())
             .then(sessions => {
                 allSessions = sessions;
                 populateSessionFilter();
@@ -61,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchFeedbacks() {
-        fetch('http://localhost:8080/tms/feedbacks')
+        fetch('http://localhost:1010/tms/feedbacks')
             .then(response => response.json())
             .then(feedbacks => {
                 allFeedbacks = feedbacks;
@@ -197,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteFeedback(feedbackId) {
-        fetch(`http://localhost:8080/tms/feedbacks/${feedbackId}`, {
+        fetch(`http://localhost:1010/tms/feedbacks/${feedbackId}`, {
             method: 'DELETE'
         })
         .then(response => {

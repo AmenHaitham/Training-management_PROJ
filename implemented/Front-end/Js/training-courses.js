@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainingCourses() {
-        fetch('http://localhost:8080/tms/training-courses')
+        fetch('http://localhost:1010/tms/training-courses')
             .then(response => response.json())
             .then(data => {
                 allTrainingCourses = data;
@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainings() {
-        fetch('http://localhost:8080/tms/trainings')
+        fetch('http://localhost:1010/tms/trainings')
             .then(response => response.json())
             .then(data => {
                 allTrainings = data;
@@ -108,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCourses() {
-        fetch('http://localhost:8080/tms/courses')
+        fetch('http://localhost:1010/tms/courses')
             .then(response => response.json())
             .then(data => {
                 allCourses = data;

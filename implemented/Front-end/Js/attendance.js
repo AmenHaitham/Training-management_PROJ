@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchAttendance() {
-    fetch('http://localhost:8080/tms/attendance')
+    fetch('http://localhost:1010/tms/attendance')
         .then(response => {
             if (!response.ok) throw new Error('Failed to fetch attendance');
             return response.json();
@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function fetchTrainees() {
-    fetch('http://localhost:8080/tms/users')
+    fetch('http://localhost:1010/tms/users')
         .then(response => response.json())
         .then(data => {
             // Filter users with role === 'TRAINEE'
@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 
     function fetchSessions() {
-        fetch('http://localhost:8080/tms/session')
+        fetch('http://localhost:1010/tms/session')
             .then(response => response.json())
             .then(data => {
                 allSessions = data;
@@ -256,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
-    const baseUrl = 'http://localhost:8080/tms/attendance';
+    const baseUrl = 'http://localhost:1010/tms/attendance';
     const url = isEditMode ? `${baseUrl}/${attendanceId}` : baseUrl;
     const method = isEditMode ? 'PUT' : 'POST';
 
@@ -268,6 +268,7 @@ document.addEventListener('DOMContentLoaded', function() {
             'Content-Type': 'application/json',
             // Add authentication headers if needed
         },
+        
         body: JSON.stringify(attendanceData)
     })
     .then(async response => {
@@ -339,7 +340,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function deleteAttendance(attendanceId) {
-    fetch(`http://localhost:8080/tms/attendance/${attendanceId}`, {
+    fetch(`http://localhost:1010/tms/attendance/${attendanceId}`, {
         method: 'DELETE'
     })
     .then(response => {

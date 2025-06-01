@@ -1,13 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
             // Fetch dashboard statistics
-            fetch('http://localhost:8080/tms/dashboard', {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
+            fetch('http://localhost:1010/tms/dashboard')
                 .then(response => response.json())
                 .then(data => {
                     console.log(data);
@@ -21,14 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 .catch(error => console.error('Error fetching dashboard stats:', error));
 
             // Fetch recent activities
-            fetch('http://localhost:8080/tms/dashboard/recent', {
-                method: 'GET',
-                credentials: 'include',
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json'
-                }
-            })
+            fetch('http://localhost:1010/tms/dashboard/recent')
                 .then(response => response.json())
                 .then(data => {
                     // Populate recent trainings
@@ -129,4 +115,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 const date = new Date(dateString);
                 return date.toLocaleDateString();
             }
+
+            
         });

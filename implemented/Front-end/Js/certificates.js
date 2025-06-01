@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainings() {
-        fetch('http://localhost:8080/tms/trainings')
+        fetch('http://localhost:1010/tms/trainings')
             .then(response => response.json())
             .then(trainings => {
                 allTrainings = trainings;
@@ -60,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainees() {
-        fetch('http://localhost:8080/tms/users?role=TRAINEE')
+        fetch('http://localhost:1010/tms/users?role=TRAINEE')
             .then(response => response.json())
             .then(trainees => {
                 allTrainees = trainees;
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCertificates() {
-        fetch('http://localhost:8080/tms/certificates')
+        fetch('http://localhost:1010/tms/certificates')
             .then(response => response.json())
             .then(certificates => {
                 allCertificates = certificates;
@@ -203,7 +203,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch('http://localhost:8080/tms/certificates', {
+        fetch('http://localhost:1010/tms/certificates', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -231,11 +231,11 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function viewCertificate(certificateId) {
-        window.open(`http://localhost:8080/tms/certificates/${certificateId}/view`, '_blank');
+        window.open(`http://localhost:1010/tms/certificates/${certificateId}/view`, '_blank');
     }
 
     function downloadCertificate(certificateId) {
-    fetch(`http://localhost:8080/tms/certificates/${certificateId}/file`)
+    fetch(`http://localhost:1010/tms/certificates/${certificateId}/file`)
         .then(response => {
             if (!response.ok) throw new Error('Network response was not ok');
             return response.blob();
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteCertificate(certificateId) {
-        fetch(`http://localhost:8080/tms/certificates/${certificateId}`, {
+        fetch(`http://localhost:1010/tms/certificates/${certificateId}`, {
             method: 'DELETE'
         })
         .then(response => {

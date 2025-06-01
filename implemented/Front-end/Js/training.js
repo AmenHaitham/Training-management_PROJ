@@ -78,7 +78,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainings() {
-        fetch('http://localhost:8080/tms/trainings')
+        fetch('http://localhost:1010/tms/trainings')
             .then(response => response.json())
             .then(data => {
                 allTrainings = data;
@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchRooms() {
-        fetch('http://localhost:8080/tms/rooms')
+        fetch('http://localhost:1010/tms/rooms')
             .then(response => response.json())
             .then(data => {
                 allRooms = data;
@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
-        const url = isEditMode ? `http://localhost:8080/tms/trainings/${trainingId}` : 'http://localhost:8080/tms/trainings';
+        const url = isEditMode ? `http://localhost:1010/tms/trainings/${trainingId}` : 'http://localhost:1010/tms/trainings';
         const method = isEditMode ? 'PUT' : 'POST';
         
         fetch(url, {
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteTraining(trainingId) {
-        fetch(`http://localhost:8080/tms/trainings/${trainingId}`, {
+        fetch(`http://localhost:1010/tms/trainings/${trainingId}`, {
             method: 'DELETE'
         })
         .then(response => {
@@ -465,7 +465,7 @@ confirmActionBtn.addEventListener('click', function () {
             status: newStatus
         };
 
-        fetch(`http://localhost:8080/tms/trainings/${trainingId}`, {
+        fetch(`http://localhost:1010/tms/trainings/${trainingId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json'
