@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('API Base URL:', API_CONFIG.BASE_URL);
     console.log('Dashboard URL:', `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DASHBOARD}`);
 
+    // Add loading state to all cards
+    const cards = document.querySelectorAll('.card');
+    cards.forEach(card => card.classList.add('loading'));
+
     // Fetch dashboard statistics
     fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.DASHBOARD}`, {
         method: 'GET',
@@ -28,10 +32,15 @@ document.addEventListener('DOMContentLoaded', function() {
         updateStat('courses-count', data.courses);
         updateStat('sessions-count', data.sessions);
         updateStat('feedbacks-count', data.feedbacks);
+
+        // Remove loading state from cards
+        cards.forEach(card => card.classList.remove('loading'));
     })
     .catch(error => {
         console.error('Error fetching dashboard statistics:', error);
         showError('Failed to load dashboard statistics. Please ensure the server is running at http://localhost:8080');
+        // Remove loading state from cards on error
+        cards.forEach(card => card.classList.remove('loading'));
     });
 
     // Fetch recent activities
@@ -219,24 +228,27 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Helper function to show loading state
     function showLoading(message) {
-        const mainContent = document.querySelector('.main-content');
-        if (!mainContent) {
-            console.error('Main content element not found');
-            return;
-        }
-
-        const loadingDiv = document.createElement('div');
-        loadingDiv.id = 'loading-message';
-        loadingDiv.className = 'alert alert-info';
-        loadingDiv.textContent = message;
-        mainContent.prepend(loadingDiv);
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'loading-overlay fade-in';
+        
+        const spinner = document.createElement('div');
+        spinner.className = 'loading-spinner';
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'loading-message';
+        messageDiv.textContent = message;
+        
+        loadingOverlay.appendChild(spinner);
+        loadingOverlay.appendChild(messageDiv);
+        document.body.appendChild(loadingOverlay);
     }
 
     // Helper function to hide loading state
     function hideLoading() {
-        const loadingDiv = document.getElementById('loading-message');
-        if (loadingDiv) {
-            loadingDiv.remove();
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => loadingOverlay.remove(), 300);
         }
     }
 });
