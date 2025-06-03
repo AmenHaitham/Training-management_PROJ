@@ -1,26 +1,11 @@
 class ShortcutButton {
     constructor() {
-        this.button = null;
-        try {
-            const button = document.createElement('button');
-            if (button instanceof Node) {
-                button.className = 'shortcut-button';
-                button.innerHTML = '<i class="fas fa-bolt"></i>';
-                this.button = button;
-            } else {
-                console.warn('Failed to create button element');
-            }
-        } catch (error) {
-            console.warn('Error creating shortcut button:', error);
-        }
+        this.button = document.createElement('button');
+        this.button.className = 'shortcut-button';
+        this.button.innerHTML = '<i class="fas fa-bolt"></i>';
     }
 
     init() {
-        if (!this.button) {
-            console.warn('Button not properly initialized');
-            return;
-        }
-
         const targetElement = document.querySelector('.main-content');
         if (!targetElement) {
             console.warn('Target element not found');
@@ -33,4 +18,10 @@ class ShortcutButton {
             console.warn('Error appending shortcut button:', error);
         }
     }
-} 
+}
+
+// Initialize the shortcut button when the DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    const shortcutButton = new ShortcutButton();
+    shortcutButton.init();
+}); 

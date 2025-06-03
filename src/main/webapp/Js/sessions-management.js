@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchSessions() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/sessions`)
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.SESSIONS}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -100,8 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainingCourses() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/training-courses`)
-            .then(response => response.json())
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TRAINING_COURSES}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 allTrainingCourses = data;
                 populateTrainingCourseSelects();
