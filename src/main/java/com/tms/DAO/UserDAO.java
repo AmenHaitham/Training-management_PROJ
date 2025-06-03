@@ -394,21 +394,56 @@ public class UserDAO implements AutoCloseable {
 
     // =================== Helper Methods ===================
     private User mapResultSetToUser(ResultSet rs) throws SQLException {
-    User user = new User();
-    user.setId(rs.getInt("id"));
-    user.setFirstName(rs.getString("first_name"));
-    user.setLastName(rs.getString("last_name"));
-    user.setPhoneNumber(rs.getString("phone_number"));
-    user.setEmail(rs.getString("email"));
-    user.setStatus(rs.getBoolean("status"));
-    user.setGender(Gender.valueOf(rs.getString("gender").toUpperCase()));
-    user.setAddress(rs.getString("address"));
-    user.setRole(Role.valueOf(rs.getString("role").toUpperCase()));
-    user.setPhoto(rs.getBytes("photo"));
-    user.setCreatedAt(rs.getTimestamp("created_at").toLocalDateTime());
-    user.setUpdatedAt(rs.getTimestamp("updated_at").toLocalDateTime());
-    return user;
-}
+        try {
+            User user = new User();
+            user.setId(rs.getInt("id"));
+            user.setFirstName(rs.getString("first_name"));
+            user.setLastName(rs.getString("last_name"));
+            user.setPhoneNumber(rs.getString("phone_number"));
+            user.setEmail(rs.getString("email"));
+            user.setStatus(rs.getBoolean("status"));
+            
+            String genderStr = rs.getString("gender");
+            if (genderStr != null) {
+                user.setGender(Gender.valueOf(genderStr.toUpperCase()));
+            }
+            
+            user.setAddress(rs.getString("address"));
+            
+            String roleStr = rs.getString("role");
+            if (roleStr != null) {
+                user.setRole(Role.valueOf(roleStr.toUpperCase()));
+            }
+            
+            user.setPhoto(rs.getBytes("photo"));
+            
+            java.sql.Timestamp createdAt = rs.getTimestamp("created_at");
+            if (createdAt != null) {
+                user.setCreatedAt(createdAt.toLocalDateTime());
+            }
+            
+            java.sql.Timestamp updatedAt = rs.getTimestamp("updated_at");
+            if (updatedAt != null) {
+                user.setUpdatedAt(updatedAt.toLocalDateTime());
+            }
+            
+            return user;
+        } catch (SQLException e) {
+            System.err.println("Error mapping ResultSet to User: " + e.getMessage());
+            System.err.println("Column values:");
+            try {
+                System.err.println("id: " + rs.getInt("id"));
+                System.err.println("first_name: " + rs.getString("first_name"));
+                System.err.println("last_name: " + rs.getString("last_name"));
+                System.err.println("email: " + rs.getString("email"));
+                System.err.println("gender: " + rs.getString("gender"));
+                System.err.println("role: " + rs.getString("role"));
+            } catch (SQLException ex) {
+                System.err.println("Error reading column values: " + ex.getMessage());
+            }
+            throw e;
+        }
+    }
 
 
     private boolean isEmailExists(String email) {
@@ -506,16 +541,29 @@ public class UserDAO implements AutoCloseable {
     // =================== Additional Features ===================
     public List<User> getAllUsers() {
         String query = "SELECT * FROM Users ORDER BY last_name, first_name";
+        System.out.println("Executing query: " + query);
         try (PreparedStatement stmt = con.prepareStatement(query)) {
             List<User> users = new ArrayList<>();
             try (ResultSet rs = stmt.executeQuery()) {
+                System.out.println("Query executed successfully");
                 while (rs.next()) {
-                    users.add(mapResultSetToUser(rs));
+                    try {
+                        User user = mapResultSetToUser(rs);
+                        users.add(user);
+                        System.out.println("Mapped user: " + user.getFirstName() + " " + user.getLastName());
+                    } catch (Exception e) {
+                        System.err.println("Error mapping user from ResultSet: " + e.getMessage());
+                        e.printStackTrace();
+                    }
                 }
             }
+            System.out.println("Successfully fetched " + users.size() + " users");
             return users;
         } catch (SQLException e) {
             System.err.println("Error fetching all users: " + e.getMessage());
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
+            e.printStackTrace();
             return Collections.emptyList();
         }
     }

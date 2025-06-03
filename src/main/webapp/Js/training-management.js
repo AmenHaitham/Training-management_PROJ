@@ -78,11 +78,16 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainings() {
-        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TRAININGS}`)
-            .then(response => response.json())
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TRAINING}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                allTrainings = data;
-                totalTrainings = data.length;
+                allTrainings = Array.isArray(data) ? data : data.content || [];
+                totalTrainings = data.totalElements || allTrainings.length;
                 filterTrainings();
             })
             .catch(error => {

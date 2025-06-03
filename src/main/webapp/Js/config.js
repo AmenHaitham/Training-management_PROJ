@@ -15,7 +15,7 @@ const API_CONFIG = {
     ENDPOINTS: {
         AUTH: '/api/auth',
         USERS: '/api/users',
-        TRAINING: '/api/training',
+        TRAINING: '/api/trainings',
         SESSIONS: '/api/sessions',
         TRAINING_COURSES: '/api/training-courses',
         MATERIALS: '/api/materials',
@@ -25,7 +25,7 @@ const API_CONFIG = {
         ENROLLMENTS: '/api/enrollments',
         COURSES: '/api/courses',
         CERTIFICATES: '/api/certificates',
-        ATTENDANCE: '/api/attendance'
+        ATTENDANCE: '/api/attendances'
     },
     DEFAULT_HEADERS: {
         'Content-Type': 'application/json',

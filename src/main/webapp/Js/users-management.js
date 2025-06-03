@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', function () {
     let filteredUsers = [];
     let currentAction = { type: '', userId: '' };
 
+    // Show loading state
+    showLoading('Loading users data...');
+
     fetchUsers();
     setupEventListeners();
 
@@ -63,41 +66,58 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    function fetchUsers() {
-        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.USERS}`)
-            .then(handleResponse)
-            .then(data => {
-                allUsers = Array.isArray(data) ? data : data.data || data.users || [];
-                totalUsers = allUsers.length;
-                filterUsers();
-            })
-            .catch(error => {
-                console.error('Error fetching users:', error);
-                showToast('Failed to load users. Please try again.', 'error');
-            });
-    }
+    // Fetch users from the API
+    async function fetchUsers() {
+        try {
+            const searchQuery = userSearch.value.toLowerCase();
+            const roleFilterValue = roleFilter.value;
+            const statusFilterValue = statusFilter.value;
 
-    async function handleResponse(response) {
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => null);
-            throw new Error(errorData?.message || `HTTP error! status: ${response.status}`);
+            const response = await fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.USERS}?page=${currentPage}&size=${usersPerPage}&search=${searchQuery}&role=${roleFilterValue}&status=${statusFilterValue}`, {
+                method: 'GET',
+                headers: API_CONFIG.DEFAULT_HEADERS
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const data = await response.json();
+            allUsers = Array.isArray(data) ? data : data.content || [];
+            totalUsers = data.totalElements || allUsers.length;
+            filterUsers();
+        } catch (error) {
+            console.error('Error fetching users:', error);
+            showError('Failed to load users. Please try again later.');
+            allUsers = [];
+            totalUsers = 0;
+            filterUsers();
+        } finally {
+            hideLoading();
         }
-        return response.json();
     }
 
     function filterUsers() {
+        if (!Array.isArray(allUsers)) {
+            allUsers = [];
+        }
+
         const searchTerm = userSearch.value.toLowerCase();
         const roleFilterValue = roleFilter.value;
         const statusFilterValue = statusFilter.value;
 
         filteredUsers = allUsers.filter(user => {
+            if (!user) return false;
+            
             const matchesSearch =
-                user.firstName.toLowerCase().includes(searchTerm) ||
-                user.lastName.toLowerCase().includes(searchTerm) ||
-                user.email.toLowerCase().includes(searchTerm) ||
-                (user.phoneNumber && user.phoneNumber.toLowerCase().includes(searchTerm));
+                (user.firstName?.toLowerCase().includes(searchTerm) || false) ||
+                (user.lastName?.toLowerCase().includes(searchTerm) || false) ||
+                (user.email?.toLowerCase().includes(searchTerm) || false) ||
+                (user.phoneNumber?.toLowerCase().includes(searchTerm) || false);
+            
             const matchesRole = roleFilterValue === '' || user.role === roleFilterValue;
-            const matchesStatus = statusFilterValue === '' || user.status.toString() === statusFilterValue;
+            const matchesStatus = statusFilterValue === '' || user.status?.toString() === statusFilterValue;
+            
             return matchesSearch && matchesRole && matchesStatus;
         });
 
@@ -238,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function () {
         };
 
         if (!userData.firstName || !userData.lastName || !userData.email || !userData.role) {
-            showToast('Please fill in all required fields', 'error');
+            showError('Please fill in all required fields');
             return;
         }
 
@@ -247,11 +267,11 @@ document.addEventListener('DOMContentLoaded', function () {
             const confirmPassword = document.getElementById('confirm-password').value;
 
             if (password.length < 6) {
-                showToast('Password must be at least 6 characters', 'error');
+                showError('Password must be at least 6 characters');
                 return;
             }
             if (password !== confirmPassword) {
-                showToast('Passwords do not match', 'error');
+                showError('Passwords do not match');
                 return;
             }
         }
@@ -268,10 +288,11 @@ document.addEventListener('DOMContentLoaded', function () {
         const method = isEditMode ? 'PUT' : 'POST';
 
         try {
+            showLoading(isEditMode ? 'Updating user...' : 'Creating user...');
             const response = await fetch(url, {
                 method,
                 body: JSON.stringify(userData),
-                headers: { 'Content-Type': 'application/json' }
+                headers: API_CONFIG.DEFAULT_HEADERS
             });
 
             if (!response.ok) {
@@ -279,18 +300,19 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(`Server responded ${response.status}: ${errorText}`);
             }
 
-            showToast('User saved successfully', 'success');
+            showSuccess(isEditMode ? 'User updated successfully' : 'User created successfully');
             closeModals();
             await fetchUsers();
         } catch (error) {
             console.error('Error saving user:', error.message);
-            showToast(error.message.includes('Failed to fetch') 
+            showError(error.message.includes('Failed to fetch') 
                 ? 'Cannot reach server. Is the backend running?'
-                : error.message, 'error');
+                : error.message);
         } finally {
             // Restore original button state
             saveUserBtn.disabled = false;
             saveUserBtn.innerHTML = originalButtonText;
+            hideLoading();
         }
     }
 
@@ -309,7 +331,7 @@ document.addEventListener('DOMContentLoaded', function () {
         try {
             const response = await fetch(`${API_CONFIG.BASE_URL}/tms/users/${userId}/status`, {
                 method: 'PUT',
-                headers: { 'Content-Type': 'application/json' },
+                headers: API_CONFIG.DEFAULT_HEADERS,
                 body: JSON.stringify({ status: !user.status })
             });
 
@@ -319,13 +341,13 @@ document.addEventListener('DOMContentLoaded', function () {
             }
 
             const data = await response.json();
-            showToast(`User ${data.status ? 'activated' : 'deactivated'} successfully`, 'success');
+            showSuccess(`User ${data.status ? 'activated' : 'deactivated'} successfully`);
             await fetchUsers();
         } catch (error) {
             console.error('Error toggling user status:', error);
-            showToast(error.message.includes('Failed to fetch') 
+            showError(error.message.includes('Failed to fetch') 
                 ? 'Cannot reach server. Is the backend running?'
-                : error.message, 'error');
+                : error.message);
         } finally {
             // Restore original button state
             confirmActionBtn.disabled = false;
@@ -344,7 +366,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
         try {
             const response = await fetch(`${API_CONFIG.BASE_URL}/tms/users/${userId}`, { 
-                method: 'DELETE' 
+                method: 'DELETE',
+                headers: API_CONFIG.DEFAULT_HEADERS
             });
 
             if (!response.ok) {
@@ -352,13 +375,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 throw new Error(`Server responded ${response.status}: ${errorText}`);
             }
 
-            showToast('User deleted successfully', 'success');
+            showSuccess('User deleted successfully');
             await fetchUsers();
         } catch (error) {
             console.error('Error deleting user:', error);
-            showToast(error.message.includes('Failed to fetch') 
+            showError(error.message.includes('Failed to fetch') 
                 ? 'Cannot reach server. Is the backend running?'
-                : error.message, 'error');
+                : error.message);
         } finally {
             // Restore original button state
             confirmActionBtn.disabled = false;
@@ -433,5 +456,71 @@ document.addEventListener('DOMContentLoaded', function () {
             clearTimeout(timeout);
             timeout = setTimeout(() => func.apply(context, args), wait);
         };
+    }
+
+    // Helper function to show error messages
+    function showError(message) {
+        const mainContent = document.querySelector('.main-content');
+        if (!mainContent) {
+            console.error('Main content element not found');
+            return;
+        }
+
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'alert alert-danger fade-in';
+        errorDiv.textContent = message;
+        mainContent.prepend(errorDiv);
+        
+        // Remove error message after 5 seconds
+        setTimeout(() => {
+            errorDiv.classList.add('fade-out');
+            setTimeout(() => errorDiv.remove(), 300);
+        }, 5000);
+    }
+
+    // Helper function to show success messages
+    function showSuccess(message) {
+        const mainContent = document.querySelector('.main-content');
+        if (!mainContent) {
+            console.error('Main content element not found');
+            return;
+        }
+
+        const successDiv = document.createElement('div');
+        successDiv.className = 'alert alert-success fade-in';
+        successDiv.textContent = message;
+        mainContent.prepend(successDiv);
+        
+        // Remove success message after 5 seconds
+        setTimeout(() => {
+            successDiv.classList.add('fade-out');
+            setTimeout(() => successDiv.remove(), 300);
+        }, 5000);
+    }
+
+    // Helper function to show loading state
+    function showLoading(message) {
+        const loadingOverlay = document.createElement('div');
+        loadingOverlay.className = 'loading-overlay fade-in';
+        
+        const spinner = document.createElement('div');
+        spinner.className = 'loading-spinner';
+        
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'loading-message';
+        messageDiv.textContent = message;
+        
+        loadingOverlay.appendChild(spinner);
+        loadingOverlay.appendChild(messageDiv);
+        document.body.appendChild(loadingOverlay);
+    }
+
+    // Helper function to hide loading state
+    function hideLoading() {
+        const loadingOverlay = document.querySelector('.loading-overlay');
+        if (loadingOverlay) {
+            loadingOverlay.classList.add('fade-out');
+            setTimeout(() => loadingOverlay.remove(), 300);
+        }
     }
 });

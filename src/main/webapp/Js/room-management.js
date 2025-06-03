@@ -72,7 +72,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function fetchRooms() {
         showLoading(true);
-        fetch(`${API_CONFIG.BASE_URL}/tms/rooms`)
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.ROOMS}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
