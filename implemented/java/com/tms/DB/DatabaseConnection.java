@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class DatabaseConnection {
-    private static final String URL = "jdbc:postgresql://localhost:5432/TMS";
+    private static final String URL = "jdbc:postgresql://tramway.proxy.rlwy.net:10138/railway";
     private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "admin";
+    private static final String PASSWORD = "xtnlNspzFurmzvGbGgtiqHrIOtcbRDNL";
     private static final int POOL_SIZE = 20;
     private static final int CONNECTION_TIMEOUT = 30;
     private static final int MAX_RETRIES = 3;
