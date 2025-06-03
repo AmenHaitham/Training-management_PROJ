@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedbacks Management | TMS Admin</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="Css/adminDashboard.css">
+<link rel="stylesheet" href="Css/feedbacks-management.css">
+    
+
+</head>
+<body>
+
+        <!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-header">
+        <h3>TMS Admin</h3>
+    </div>
+    <div class="sidebar-menu">
+        <h4>Main</h4>
+        <ul>
+            <li class="active">
+                <a href="adminDashboard.html">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+        </ul>
+        
+        <h4>Management</h4>
+        <ul>
+            <li>
+                <a href="users-management.html">
+                    <i class="fas fa-users"></i>
+                    <span>Users Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="trainings-management.html">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Trainings Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="room-management.html">
+                    <i class="fas fa-door-open"></i>
+                    <span>Rooms Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="courses-management.html">
+                    <i class="fas fa-book"></i>
+                    <span>Courses Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="training-courses-management.html">
+                    <i class="fas fa-project-diagram"></i>
+                    <span>Training Courses</span>
+                </a>
+            </li>
+            <li>
+                <a href="sessions-management.html">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Sessions Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="materials-management.html">
+                    <i class="fas fa-file-alt"></i>
+                    <span>Materials Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="enrollments-management.html">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Enrollment Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="feedbacks-management.html">
+                    <i class="fas fa-comment"></i>
+                    <span>Feedbacks Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="certificates-management.html">
+                    <i class="fas fa-certificate"></i>
+                    <span>Certificates Management</span>
+                </a>
+            </li>
+            <li>
+                <a href="attendances-management.html">
+                    <i class="fas fa-clipboard-check"></i>
+                    <span>Attendance Management</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+
+
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <h2>Feedbacks Management</h2>
+            <div class="user-info">
+                <span>Admin User</span>
+            </div>
+        </div>
+
+        <!-- Feedbacks Management Tools -->
+        <div class="management-tools">
+            <div class="search-filter">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="feedback-search" placeholder="Search feedbacks...">
+                </div>
+                <select id="session-filter">
+                    <option value="">All Sessions</option>
+                    <!-- Will be populated by JavaScript -->
+                </select>
+                <select id="rating-filter">
+                    <option value="">All Ratings</option>
+                    <option value="1">1 Star</option>
+                    <option value="2">2 Stars</option>
+                    <option value="3">3 Stars</option>
+                    <option value="4">4 Stars</option>
+                    <option value="5">5 Stars</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Feedbacks Table -->
+        <div class="table-container">
+            <table id="feedbacks-table">
+                <thead>
+                    <tr>
+                        <th>Trainee</th>
+                        <th>Session</th>
+                        <th>Rating</th>
+                        <th>Comment</th>
+                        <th>Submitted At</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Will be populated by JavaScript -->
+                </tbody>
+            </table>
+            <div class="table-footer">
+                <div class="pagination-info" id="pagination-info"></div>
+                <div class="pagination-controls">
+                    <button id="prev-page" disabled><i class="fas fa-chevron-left"></i></button>
+                    <span id="page-indicator">1</span>
+                    <button id="next-page"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- View Feedback Modal -->
+        <div class="modal" id="view-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Feedback Details</h3>
+                    <button class="close-modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="feedback-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Trainee:</span>
+                            <span id="detail-trainee"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Session:</span>
+                            <span id="detail-session"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Rating:</span>
+                            <span id="detail-rating"></span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Submitted At:</span>
+                            <span id="detail-date"></span>
+                        </div>
+                        <div class="detail-row full-width">
+                            <span class="detail-label">Comment:</span>
+                            <div id="detail-comment" class="comment-text"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn-secondary close-modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="Js/feedbacks-management.js"></script>
+</body>
+</html>

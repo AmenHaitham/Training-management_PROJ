@@ -1,3 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
          version="5.0">
+    
+    <!-- User Servlet Mapping -->
+    <servlet>
+        <servlet-name>UserServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.UserServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>UserServlet</servlet-name>
+        <url-pattern>/api/users/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Authentication Servlet Mapping -->
+    <servlet>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.AuthenticationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AuthenticationServlet</servlet-name>
+        <url-pattern>/api/auth/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Training Servlet Mapping -->
+    <servlet>
+        <servlet-name>TrainingServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.TrainingServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TrainingServlet</servlet-name>
+        <url-pattern>/api/trainings/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Course Servlet Mapping -->
+    <servlet>
+        <servlet-name>CourseServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.CourseServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CourseServlet</servlet-name>
+        <url-pattern>/api/courses/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Session Servlet Mapping -->
+    <servlet>
+        <servlet-name>SessionServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.SessionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>SessionServlet</servlet-name>
+        <url-pattern>/api/sessions/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Attendance Servlet Mapping -->
+    <servlet>
+        <servlet-name>AttendanceServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.AttendanceServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>AttendanceServlet</servlet-name>
+        <url-pattern>/api/attendance/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Certificate Servlet Mapping -->
+    <servlet>
+        <servlet-name>CertificateServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.CertificateServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CertificateServlet</servlet-name>
+        <url-pattern>/api/certificates/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Feedback Servlet Mapping -->
+    <servlet>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.FeedbackServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>FeedbackServlet</servlet-name>
+        <url-pattern>/api/feedback/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Material Servlet Mapping -->
+    <servlet>
+        <servlet-name>MaterialServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.MaterialServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>MaterialServlet</servlet-name>
+        <url-pattern>/api/materials/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Room Servlet Mapping -->
+    <servlet>
+        <servlet-name>RoomServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.RoomServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RoomServlet</servlet-name>
+        <url-pattern>/api/rooms/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Trainee Dashboard Servlet Mapping -->
+    <servlet>
+        <servlet-name>TraineeDashboardServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.TraineeDashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TraineeDashboardServlet</servlet-name>
+        <url-pattern>/api/trainee-dashboard/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Training Course Servlet Mapping -->
+    <servlet>
+        <servlet-name>TrainingCourseServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.TrainingCourseServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TrainingCourseServlet</servlet-name>
+        <url-pattern>/api/training-courses/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Dashboard Servlet Mapping -->
+    <servlet>
+        <servlet-name>DashboardServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.DashboardServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DashboardServlet</servlet-name>
+        <url-pattern>/api/dashboard/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Enrollment Servlet Mapping -->
+    <servlet>
+        <servlet-name>EnrollmentServlet</servlet-name>
+        <servlet-class>com.tms.Controllers.EnrollmentServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>EnrollmentServlet</servlet-name>
+        <url-pattern>/api/enrollments/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- CORS Filter -->
+    <filter>
+        <filter-name>CORSFilter</filter-name>
+        <filter-class>com.tms.Filters.CORSFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CORSFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Welcome File List -->
+    <welcome-file-list>
+        <welcome-file>login.html</welcome-file>
+    </welcome-file-list>
 </web-app>
