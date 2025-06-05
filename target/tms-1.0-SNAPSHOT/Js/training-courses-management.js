@@ -81,8 +81,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainingCourses() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/training-courses`)
-            .then(response => response.json())
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TRAINING_COURSES}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 allTrainingCourses = data;
                 totalTrainingCourses = data.length;
@@ -95,8 +100,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainings() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/trainings`)
-            .then(response => response.json())
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TRAINING}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 allTrainings = data;
                 populateTrainingSelects();
@@ -108,8 +118,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchCourses() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/courses`)
-            .then(response => response.json())
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.COURSES}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 allCourses = data;
                 populateCourseSelects();

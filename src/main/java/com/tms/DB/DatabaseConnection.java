@@ -14,9 +14,9 @@ import org.slf4j.LoggerFactory;
 
 public class DatabaseConnection {
     private static final Logger logger = LoggerFactory.getLogger(DatabaseConnection.class);
-    private static final String URL = "jdbc:postgresql://tramway.proxy.rlwy.net:10138/railway";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "xtnlNspzFurmzvGbGgtiqHrIOtcbRDNL";
+    private static final String URL = "jdbc:postgresql://196.221.167.63:5432/tms_db";
+    private static final String USERNAME = "tms_user";
+    private static final String PASSWORD = "tms_pass";
     private static final int POOL_SIZE = 10; // Reduced pool size
     private static final int CONNECTION_TIMEOUT = 30;
     private static final int MAX_RETRIES = 3;

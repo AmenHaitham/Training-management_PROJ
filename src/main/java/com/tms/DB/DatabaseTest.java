@@ -6,9 +6,9 @@ import java.sql.SQLException;
 
 public class DatabaseTest {
     public static void main(String[] args) {
-        String url = "jdbc:postgresql://tramway.proxy.rlwy.net:10138/railway";
-        String username = "postgres";
-        String password = "xtnlNspzFurmzvGbGgtiqHrIOtcbRDNL";
+        String url = "jdbc:postgresql://196.221.167.63:5432/tms_db";
+        String username = "tms_user";
+        String password = "tms_pass";
 
         try {
             // Load the PostgreSQL JDBC driver
