@@ -523,7 +523,7 @@ public class CertificateServlet extends HttpServlet {
                     
                     <div class='certificate-id'>Certificate ID: CERT-%d</div>
                 </div>
-                <a class='download-link' href='/tms/certificates/%d/file'>Download Official Certificate</a>
+                <a class='download-link' href='/api/certificates/%d/file'>Download Official Certificate</a>
             </div>
         </body>
         </html>
@@ -572,10 +572,11 @@ public class CertificateServlet extends HttpServlet {
     }
 
     private void setCORSHeaders(HttpServletResponse response) {
-        response.setHeader("Access-Control-Allow-Origin", "http://196.221.167.63:8080");
-        response.setHeader("Access-Control-Allow-Methods", "GET, POST, DELETE, OPTIONS");
-        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        response.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
         response.setHeader("Access-Control-Allow-Credentials", "true");
+        response.setHeader("Access-Control-Max-Age", "3600");
     }
 
     private void logError(String message, Exception e) {

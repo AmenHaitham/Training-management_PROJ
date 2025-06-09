@@ -1,3 +1,13 @@
+// Immediately check if API_CONFIG is available
+if (typeof API_CONFIG === 'undefined') {
+    console.error('API_CONFIG is not defined. Make sure config.js is loaded before certificates-management.js');
+    throw new Error('API_CONFIG is not defined');
+}
+
+console.log('API_CONFIG loaded:', API_CONFIG);
+console.log('BASE_URL:', API_CONFIG.BASE_URL);
+console.log('CERTIFICATES endpoint:', API_CONFIG.ENDPOINTS.CERTIFICATES);
+
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const certificatesTable = document.getElementById('certificates-table');
@@ -23,6 +33,39 @@ document.addEventListener('DOMContentLoaded', function() {
     let allTrainings = [];
     let allTrainees = [];
 
+    // Function Definitions
+    function populateTrainingFilters() {
+        trainingFilter.innerHTML = '<option value="">All Trainings</option>';
+        
+        allTrainings.forEach(training => {
+            const option = document.createElement('option');
+            option.value = training.id;
+            option.textContent = training.title;
+            trainingFilter.appendChild(option);
+        });
+    }
+
+    function populateTrainingSelect() {
+        trainingSelect.innerHTML = '<option value="">Select Training</option>';
+        
+        allTrainings.forEach(training => {
+            const option = document.createElement('option');
+            option.value = training.id;
+            option.textContent = training.title;
+            trainingSelect.appendChild(option);
+        });
+    }
+
+    function populateTraineeSelect() {
+        traineeSelect.innerHTML = '<option value="">Select Trainee</option>';
+        allTrainees.forEach(trainee => {
+            const option = document.createElement('option');
+            option.value = trainee.id;
+            option.textContent = `${trainee.firstName} ${trainee.lastName}`;
+            traineeSelect.appendChild(option);
+        });
+    }
+
     // Initialize
     fetchTrainings();
     fetchTrainees();
@@ -47,68 +90,124 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchTrainings() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/trainings`)
-            .then(response => response.json())
-            .then(trainings => {
-                allTrainings = trainings;
-                populateTrainingFilters();
-            })
-            .catch(error => {
-                console.error('Error fetching trainings:', error);
-                showToast('Failed to load trainings. Please try again.', 'error');
-            });
-    }
-
-    function fetchTrainees() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/users?role=TRAINEE`)
-            .then(response => response.json())
-            .then(trainees => {
-                allTrainees = trainees;
-                populateTraineeSelect();
-            })
-            .catch(error => {
-                console.error('Error fetching trainees:', error);
-                showToast('Failed to load trainees. Please try again.', 'error');
-            });
-    }
-
-    function fetchCertificates() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/certificates`)
-            .then(response => response.json())
-            .then(certificates => {
-                allCertificates = certificates;
-                filterCertificates();
-            })
-            .catch(error => {
-                console.error('Error fetching certificates:', error);
-                showToast('Failed to load certificates. Please try again.', 'error');
-            });
-    }
-
-    function populateTrainingFilters() {
-        trainingFilter.innerHTML = '<option value="">All Trainings</option>';
-        trainingSelect.innerHTML = '<option value="">Select Training</option>';
+        const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.TRAINING}`;
+        console.log('Fetching trainings from:', url);
         
-        allTrainings.forEach(training => {
-            const option1 = document.createElement('option');
-            option1.value = training.id;
-            option1.textContent = training.title;
-            trainingFilter.appendChild(option1);
-
-            const option2 = document.createElement('option');
-            option2.value = training.id;
-            option2.textContent = training.title;
-            trainingSelect.appendChild(option2);
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                ...API_CONFIG.DEFAULT_HEADERS,
+                'Cache-Control': 'no-cache'
+            }
+        })
+        .then(response => {
+            console.log('Trainings response status:', response.status);
+            console.log('Trainings response headers:', Object.fromEntries(response.headers.entries()));
+            
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error('Error response text:', text);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Trainings response data:', data);
+            allTrainings = Array.isArray(data) ? data : 
+                         data.data || data.trainings || [];
+            
+            console.log('Processed trainings:', allTrainings);
+            
+            populateTrainingFilters();
+            populateTrainingSelect();
+        })
+        .catch(error => {
+            console.error('Error fetching trainings:', error);
+            showToast('Failed to load trainings. Please try again.', 'error');
+            allTrainings = [];
+            populateTrainingFilters();
+            populateTrainingSelect();
         });
     }
 
-    function populateTraineeSelect() {
-        traineeSelect.innerHTML = '<option value="">Select Trainee</option>';
-        allTrainees.forEach(trainee => {
-            const option = document.createElement('option');
-            option.value = trainee.id;
-            option.textContent = `${trainee.firstName} ${trainee.lastName}`;
-            traineeSelect.appendChild(option);
+    function fetchTrainees() {
+        const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.USERS}/role/TRAINEE`;
+        console.log('Fetching trainees from:', url);
+        
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                ...API_CONFIG.DEFAULT_HEADERS,
+                'Cache-Control': 'no-cache'
+            }
+        })
+        .then(response => {
+            console.log('Trainees response status:', response.status);
+            console.log('Trainees response headers:', Object.fromEntries(response.headers.entries()));
+            
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error('Error response text:', text);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Trainees response data:', data);
+            allTrainees = Array.isArray(data) ? data : 
+                         data.data || data.users || [];
+            
+            console.log('Processed trainees:', allTrainees);
+            
+            populateTraineeSelect();
+        })
+        .catch(error => {
+            console.error('Error fetching trainees:', error);
+            showToast('Failed to load trainees. Please try again.', 'error');
+            allTrainees = [];
+            populateTraineeSelect();
+        });
+    }
+
+    function fetchCertificates() {
+        const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CERTIFICATES}`;
+        console.log('Fetching certificates from:', url);
+        
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                ...API_CONFIG.DEFAULT_HEADERS,
+                'Cache-Control': 'no-cache'
+            }
+        })
+        .then(response => {
+            console.log('Certificates response status:', response.status);
+            console.log('Certificates response headers:', Object.fromEntries(response.headers.entries()));
+            
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error('Error response text:', text);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Certificates response data:', data);
+            allCertificates = Array.isArray(data) ? data : 
+                            data.data || data.certificates || [];
+            
+            console.log('Processed certificates:', allCertificates);
+            
+            filterCertificates();
+        })
+        .catch(error => {
+            console.error('Error fetching certificates:', error);
+            showToast('Failed to load certificates. Please try again.', 'error');
+            allCertificates = [];
+            filterCertificates();
         });
     }
 
@@ -203,10 +302,10 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        fetch(`${API_CONFIG.BASE_URL}/tms/certificates`, {
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CERTIFICATES}`, {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                ...API_CONFIG.DEFAULT_HEADERS
             },
             body: JSON.stringify({
                 trainee: {id : parseInt(traineeId)},
@@ -231,29 +330,59 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function viewCertificate(certificateId) {
-        window.open(`${API_CONFIG.BASE_URL}/tms/certificates/${certificateId}/view`, '_blank');
+        window.open(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CERTIFICATES}/${certificateId}/view`, '_blank');
     }
 
     function downloadCertificate(certificateId) {
-        fetch(`${API_CONFIG.BASE_URL}/tms/certificates/${certificateId}/file`)
-            .then(response => {
-                if (!response.ok) throw new Error('Network response was not ok');
-                return response.blob();
-            })
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `certificate_${certificateId}.pdf`; // adjust extension if needed
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
-                window.URL.revokeObjectURL(url);
-            })
-            .catch(err => {
-                console.error('Download failed:', err);
-                showToast('Failed to download certificate', 'error');
-            });
+        const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CERTIFICATES}/${certificateId}/file`;
+        console.log('Downloading certificate from:', url);
+        
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                ...API_CONFIG.DEFAULT_HEADERS,
+                'Accept': 'application/pdf'
+            },
+            credentials: 'include'
+        })
+        .then(response => {
+            console.log('Download response status:', response.status);
+            console.log('Download response headers:', Object.fromEntries(response.headers.entries()));
+            
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error('Error response text:', text);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                });
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            // Create a temporary link element
+            const link = document.createElement('a');
+            link.style.display = 'none';
+            
+            // Create a blob URL
+            const blobUrl = window.URL.createObjectURL(blob);
+            
+            // Set up the link
+            link.href = blobUrl;
+            link.download = `certificate_${certificateId}.pdf`;
+            
+            // Append to body, click, and remove
+            document.body.appendChild(link);
+            link.click();
+            
+            // Clean up
+            setTimeout(() => {
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(blobUrl);
+            }, 100);
+        })
+        .catch(error => {
+            console.error('Download failed:', error);
+            showToast('Failed to download certificate. Please try again.', 'error');
+        });
     }
 
     function confirmDeleteCertificate(certificateId) {
@@ -266,7 +395,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteCertificate(certificateId) {
-        fetch(`${API_CONFIG.BASE_URL}/tms/certificates/${certificateId}`, {
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.CERTIFICATES}/${certificateId}`, {
             method: 'DELETE'
         })
         .then(response => {

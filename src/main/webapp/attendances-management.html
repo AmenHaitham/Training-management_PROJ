@@ -4,100 +4,106 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Attendance Management | TMS Admin</title>
+    <!-- CSS Files -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link rel="stylesheet" href="Css/adminDashboard.css">
     <link rel="stylesheet" href="Css/room-management.css">
-    <link rel="stylesheet" href="Css/attendance.css">
+    <link rel="stylesheet" href="Css/attendance-management.css">
+    
+    <!-- JavaScript Files -->
+    <script src="Js/config.js"></script>
+    <script src="Js/index.js"></script>
+    <script src="Js/featureScript.js"></script>
+    <script src="Js/attendance-management.js"></script>
 </head>
 <body>
-        <!-- Sidebar -->
-<div class="sidebar">
-    <div class="sidebar-header">
-        <h3>TMS Admin</h3>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <h3>TMS Admin</h3>
+        </div>
+        <div class="sidebar-menu">
+            <h4>Main</h4>
+            <ul>
+                <li class="active">
+                    <a href="adminDashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <h4>Management</h4>
+            <ul>
+                <li>
+                    <a href="users-management.html">
+                        <i class="fas fa-users"></i>
+                        <span>Users Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="trainings-management.html">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>Trainings Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="room-management.html">
+                        <i class="fas fa-door-open"></i>
+                        <span>Rooms Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="courses-management.html">
+                        <i class="fas fa-book"></i>
+                        <span>Courses Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="training-courses-management.html">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>Training Courses</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="sessions-management.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Sessions Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="materials-management.html">
+                        <i class="fas fa-file-alt"></i>
+                        <span>Materials Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="enrollments-management.html">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Enrollment Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="feedbacks-management.html">
+                        <i class="fas fa-comment"></i>
+                        <span>Feedbacks Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="certificates-management.html">
+                        <i class="fas fa-certificate"></i>
+                        <span>Certificates Management</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="attendances-management.html">
+                        <i class="fas fa-clipboard-check"></i>
+                        <span>Attendance Management</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
     </div>
-    <div class="sidebar-menu">
-        <h4>Main</h4>
-        <ul>
-            <li class="active">
-                <a href="adminDashboard.html">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-        </ul>
-        
-        <h4>Management</h4>
-        <ul>
-            <li>
-                <a href="users-management.html">
-                    <i class="fas fa-users"></i>
-                    <span>Users Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="trainings-management.html">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Trainings Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="room-management.html">
-                    <i class="fas fa-door-open"></i>
-                    <span>Rooms Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="courses-management.html">
-                    <i class="fas fa-book"></i>
-                    <span>Courses Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="training-courses-management.html">
-                    <i class="fas fa-project-diagram"></i>
-                    <span>Training Courses</span>
-                </a>
-            </li>
-            <li>
-                <a href="sessions-management.html">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Sessions Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="materials-management.html">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Materials Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="enrollments-management.html">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Enrollment Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="feedbacks-management.html">
-                    <i class="fas fa-comment"></i>
-                    <span>Feedbacks Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="certificates-management.html">
-                    <i class="fas fa-certificate"></i>
-                    <span>Certificates Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="attendances-management.html">
-                    <i class="fas fa-clipboard-check"></i>
-                    <span>Attendance Management</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
-
 
     <!-- Main Content -->
     <div class="main-content">
@@ -215,9 +221,5 @@
             </div>
         </div>
     </div>
-
-    </div>
-
-    <script src="Js/attendance-management.js"></script>
 </body>
 </html>

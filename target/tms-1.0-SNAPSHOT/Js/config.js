@@ -1,16 +1,10 @@
+// Define API_CONFIG
 const API_CONFIG = {
     get BASE_URL() {
         const protocol = window.location.protocol;
         const hostname = window.location.hostname;
         const port = window.location.port;
-
-        // If running on file:// protocol or Live Server (port 5500)
-        if (protocol === 'file:' || (hostname === '127.0.0.1' && port === '5500')) {
-            return 'http://localhost:8080';
-        }
-        
-        // If running on server, use relative path
-        return '';
+        return `${protocol}//${hostname}${port ? ':' + port : ''}`;
     },
     ENDPOINTS: {
         AUTH: '/api/auth',
@@ -25,10 +19,17 @@ const API_CONFIG = {
         ENROLLMENTS: '/api/enrollments',
         COURSES: '/api/courses',
         CERTIFICATES: '/api/certificates',
-        ATTENDANCE: '/api/attendances'
+        ATTENDANCE: '/api/attendances',
+        FEEDBACKS: '/api/feedbacks'
     },
     DEFAULT_HEADERS: {
         'Content-Type': 'application/json',
         'Accept': 'application/json'
     }
-}; 
+};
+
+// Export API_CONFIG to window object
+window.API_CONFIG = API_CONFIG;
+
+// Log API_CONFIG for debugging
+console.log('API_CONFIG initialized:', API_CONFIG); 

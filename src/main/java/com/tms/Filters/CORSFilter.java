@@ -17,10 +17,20 @@ public class CORSFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-        // Allow requests from any origin
-        httpResponse.setHeader("Access-Control-Allow-Origin", "http://196.221.167.63:8080");
+        // Get the origin from the request
+        String origin = httpRequest.getHeader("Origin");
+        
+        // Allow requests from both localhost and production server
+        if (origin != null && (
+            origin.startsWith("http://localhost:") || 
+            origin.startsWith("http://127.0.0.1:") ||
+            origin.equals("http://196.221.167.63:8080"))) {
+            httpResponse.setHeader("Access-Control-Allow-Origin", origin);
+        }
+
         httpResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         httpResponse.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With");
+        httpResponse.setHeader("Access-Control-Allow-Credentials", "true");
         httpResponse.setHeader("Access-Control-Max-Age", "3600");
 
         // Handle preflight requests

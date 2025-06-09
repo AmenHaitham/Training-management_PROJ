@@ -3,133 +3,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enrollment Management | TMS Admin</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="css/adminDashboard.css">
-    <link rel="stylesheet" href="css/enrollment-management.css">
+    <title>Enrollments Management - TMS</title>
+    <link rel="stylesheet" href="Css/enrollment-management.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-        <!-- Sidebar -->
-<div class="sidebar">
-    <div class="sidebar-header">
-        <h3>TMS Admin</h3>
-    </div>
-    <div class="sidebar-menu">
-        <h4>Main</h4>
-        <ul>
-            <li class="active">
-                <a href="adminDashboard.html">
-                    <i class="fas fa-tachometer-alt"></i>
-                    <span>Dashboard</span>
-                </a>
-            </li>
-        </ul>
-        
-        <h4>Management</h4>
-        <ul>
-            <li>
-                <a href="users-management.html">
-                    <i class="fas fa-users"></i>
-                    <span>Users Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="trainings-management.html">
-                    <i class="fas fa-graduation-cap"></i>
-                    <span>Trainings Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="room-management.html">
-                    <i class="fas fa-door-open"></i>
-                    <span>Rooms Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="courses-management.html">
-                    <i class="fas fa-book"></i>
-                    <span>Courses Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="training-courses-management.html">
-                    <i class="fas fa-project-diagram"></i>
-                    <span>Training Courses</span>
-                </a>
-            </li>
-            <li>
-                <a href="sessions-management.html">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Sessions Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="materials-management.html">
-                    <i class="fas fa-file-alt"></i>
-                    <span>Materials Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="enrollments-management.html">
-                    <i class="fas fa-user-plus"></i>
-                    <span>Enrollment Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="feedbacks-management.html">
-                    <i class="fas fa-comment"></i>
-                    <span>Feedbacks Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="certificates-management.html">
-                    <i class="fas fa-certificate"></i>
-                    <span>Certificates Management</span>
-                </a>
-            </li>
-            <li>
-                <a href="attendances-management.html">
-                    <i class="fas fa-clipboard-check"></i>
-                    <span>Attendance Management</span>
-                </a>
-            </li>
-        </ul>
-    </div>
-</div>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <img src="Images/logo.png" alt="TMS Logo" class="sidebar-logo">
+            <h1 class="sidebar-title">TMS</h1>
+        </div>
+        <nav class="sidebar-menu">
+            <a href="dashboard.html" class="menu-item">
+                <i class="fas fa-home"></i>
+                Dashboard
+            </a>
+            <a href="users-management.html" class="menu-item">
+                <i class="fas fa-users"></i>
+                Users
+            </a>
+            <a href="trainings-management.html" class="menu-item">
+                <i class="fas fa-graduation-cap"></i>
+                Trainings
+            </a>
+            <a href="enrollments-management.html" class="menu-item active">
+                <i class="fas fa-user-graduate"></i>
+                Enrollments
+            </a>
+            <a href="materials-management.html" class="menu-item">
+                <i class="fas fa-book"></i>
+                Materials
+            </a>
+            <a href="rooms-management.html" class="menu-item">
+                <i class="fas fa-door-open"></i>
+                Rooms
+            </a>
+            <a href="reports.html" class="menu-item">
+                <i class="fas fa-chart-bar"></i>
+                Reports
+            </a>
+            <a href="settings.html" class="menu-item">
+                <i class="fas fa-cog"></i>
+                Settings
+            </a>
+        </nav>
+    </aside>
 
-
+    <!-- Mobile Menu Toggle -->
+    <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+    </button>
 
     <!-- Main Content -->
-    <div class="main-content">
-        <div class="header">
-            <h2>Enrollment Management</h2>
-            <div class="user-info">
-                <span>Admin User</span>
-            </div>
+    <main class="main-content">
+        <div class="page-header">
+            <h1 class="page-title">Enrollments Management</h1>
+            <p class="page-description">Manage training enrollments and track participant status</p>
         </div>
 
         <!-- Management Tools -->
         <div class="management-tools">
-            <div class="search-filter">
-                <div class="search-box">
-                    <i class="fas fa-search"></i>
-                    <input type="text" id="enrollment-search" placeholder="Search enrollments...">
-                </div>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="enrollment-search" placeholder="Search enrollments...">
+            </div>
+            <div class="filter-group">
                 <select id="training-filter">
                     <option value="">All Trainings</option>
-                    <!-- Will be populated by JS -->
                 </select>
                 <select id="trainee-filter">
                     <option value="">All Trainees</option>
-                    <!-- Will be populated by JS -->
+                </select>
+                <select id="status-filter">
+                    <option value="">All Status</option>
+                    <option value="pending">Pending</option>
+                    <option value="completed">Completed</option>
+                    <option value="cancelled">Cancelled</option>
                 </select>
             </div>
-            <button id="add-enrollment-btn" class="btn-primary">
-                <i class="fas fa-plus"></i> New Enrollment
+            <button class="btn btn-primary" id="add-enrollment-btn">
+                <i class="fas fa-plus"></i>
+                Add Enrollment
             </button>
         </div>
 
-        <!-- Enrollments Table -->
+        <!-- Table Container -->
         <div class="table-container">
             <table id="enrollments-table">
                 <thead>
@@ -137,73 +96,106 @@
                         <th>Trainee</th>
                         <th>Training</th>
                         <th>Enrollment Date</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Will be populated by JavaScript -->
+                    <!-- Table content will be populated by JavaScript -->
                 </tbody>
             </table>
-            <div class="table-footer">
-                <div class="pagination-info" id="pagination-info"></div>
+            <div class="pagination">
                 <div class="pagination-controls">
-                    <button id="prev-page" disabled><i class="fas fa-chevron-left"></i></button>
+                    <button class="pagination-btn" id="prev-page" disabled>
+                        <i class="fas fa-chevron-left"></i>
+                    </button>
                     <span id="page-indicator">1</span>
-                    <button id="next-page"><i class="fas fa-chevron-right"></i></button>
+                    <button class="pagination-btn" id="next-page">
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+                <div class="pagination-info" id="pagination-info">
+                    Showing 1-10 of 0 enrollments
                 </div>
             </div>
         </div>
+    </main>
 
-        <!-- Add Enrollment Modal -->
-        <div class="modal" id="enrollment-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3 id="modal-title">Add New Enrollment</h3>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form id="enrollment-form">
-                        <input type="hidden" id="enrollment-id">
-                        <div class="form-group">
-                            <label for="trainee">Trainee</label>
-                            <select id="trainee" required>
-                                <option value="">Select Trainee</option>
-                                <!-- Will be populated by JS -->
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="training">Training</label>
-                            <select id="training" required>
-                                <option value="">Select Training</option>
-                                <!-- Will be populated by JS -->
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn-secondary close-modal">Cancel</button>
-                    <button id="save-enrollment" class="btn-primary">Save</button>
-                </div>
+    <!-- Enrollment Modal -->
+    <div class="modal" id="enrollment-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modal-title">Add Enrollment</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="enrollment-form">
+                    <input type="hidden" id="enrollment-id">
+                    <div class="form-group">
+                        <label for="training">Training</label>
+                        <select id="training" required>
+                            <option value="">Select Training</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="trainee">Trainee</label>
+                        <select id="trainee" required>
+                            <option value="">Select Trainee</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="status">Status</label>
+                        <select id="status" required>
+                            <option value="">Select Status</option>
+                            <option value="pending">Pending</option>
+                            <option value="completed">Completed</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" id="save-enrollment">Save</button>
             </div>
         </div>
+    </div>
 
-        <!-- Confirmation Modal -->
-        <div class="modal" id="confirm-modal">
-            <div class="modal-content small">
-                <div class="modal-header">
-                    <h3 id="confirm-title">Confirm Action</h3>
-                    <button class="close-modal">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <p id="confirm-message">Are you sure you want to perform this action?</p>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn-secondary close-modal">Cancel</button>
-                    <button id="confirm-action" class="btn-primary">Confirm</button>
-                </div>
+    <!-- Confirmation Modal -->
+    <div class="modal" id="confirm-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="confirm-title">Confirm Action</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirm-message">Are you sure you want to perform this action?</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-danger" id="confirm-action">Confirm</button>
             </div>
         </div>
+    </div>
 
+    <!-- Scripts -->
+    <script src="Js/config.js"></script>
     <script src="Js/enrollment-management.js"></script>
+    <script>
+        // Mobile menu toggle
+        document.getElementById('menuToggle').addEventListener('click', function() {
+            document.querySelector('.sidebar').classList.toggle('active');
+        });
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.querySelector('.sidebar');
+            const menuToggle = document.getElementById('menuToggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !menuToggle.contains(event.target)) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>

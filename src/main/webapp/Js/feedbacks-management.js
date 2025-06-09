@@ -1,3 +1,13 @@
+// Immediately check if API_CONFIG is available
+if (typeof API_CONFIG === 'undefined') {
+    console.error('API_CONFIG is not defined. Make sure config.js is loaded before feedbacks-management.js');
+    throw new Error('API_CONFIG is not defined');
+}
+
+console.log('API_CONFIG loaded:', API_CONFIG);
+console.log('BASE_URL:', API_CONFIG.BASE_URL);
+console.log('FEEDBACKS endpoint:', API_CONFIG.ENDPOINTS.FEEDBACKS);
+
 document.addEventListener('DOMContentLoaded', function() {
     // DOM Elements
     const feedbacksTable = document.getElementById('feedbacks-table');
@@ -43,34 +53,76 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function fetchSessions() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/sessions`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
-            .then(sessions => {
-                allSessions = sessions;
-                populateSessionFilter();
-            })
-            .catch(error => {
-                console.error('Error fetching sessions:', error);
-                showToast('Failed to load sessions. Please try again.', 'error');
-            });
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.SESSIONS}`, {
+            method: 'GET',
+            headers: API_CONFIG.DEFAULT_HEADERS
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then(data => {
+            // Handle different possible response structures
+            allSessions = Array.isArray(data) ? data : 
+                        data.data || data.sessions || [];
+            
+            console.log('Fetched sessions:', allSessions); // Debug log
+            
+            populateSessionFilter();
+        })
+        .catch(error => {
+            console.error('Error fetching sessions:', error);
+            showToast('Failed to load sessions. Please try again.', 'error');
+            allSessions = [];
+            populateSessionFilter();
+        });
     }
 
     function fetchFeedbacks() {
-        fetch(`${API_CONFIG.BASE_URL}/tms/feedbacks`)
-            .then(response => response.json())
-            .then(feedbacks => {
-                allFeedbacks = feedbacks;
-                filterFeedbacks();
-            })
-            .catch(error => {
-                console.error('Error fetching feedbacks:', error);
-                showToast('Failed to load feedbacks. Please try again.', 'error');
-            });
+        const url = `${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.FEEDBACKS}`;
+        console.log('Fetching feedbacks from:', url);
+        
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                ...API_CONFIG.DEFAULT_HEADERS,
+                'Cache-Control': 'no-cache'
+            }
+        })
+        .then(response => {
+            console.log('Feedbacks response status:', response.status);
+            console.log('Feedbacks response headers:', Object.fromEntries(response.headers.entries()));
+            
+            if (!response.ok) {
+                return response.text().then(text => {
+                    console.error('Error response text:', text);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                });
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Feedbacks response data:', data);
+            // Handle different possible response structures
+            allFeedbacks = Array.isArray(data) ? data : 
+                         data.data || data.feedbacks || [];
+            
+            console.log('Processed feedbacks:', allFeedbacks);
+            
+            filteredFeedbacks = [...allFeedbacks];
+            renderFeedbacksTable();
+            updatePagination();
+        })
+        .catch(error => {
+            console.error('Error fetching feedbacks:', error);
+            showToast('Failed to load feedbacks. Please try again.', 'error');
+            allFeedbacks = [];
+            filteredFeedbacks = [];
+            renderFeedbacksTable();
+            updatePagination();
+        });
     }
 
     function populateSessionFilter() {
@@ -197,8 +249,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function deleteFeedback(feedbackId) {
-        fetch(`${API_CONFIG.BASE_URL}/tms/feedbacks/${feedbackId}`, {
-            method: 'DELETE'
+        fetch(`${API_CONFIG.BASE_URL}${API_CONFIG.ENDPOINTS.FEEDBACKS}/${feedbackId}`, {
+            method: 'DELETE',
+            headers: API_CONFIG.DEFAULT_HEADERS
         })
         .then(response => {
             if (!response.ok) {
@@ -294,49 +347,48 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-function showToast(message, type = 'info') {
-    const container = document.querySelector('.toast-container') || createToastContainer();
-    const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
-    
-    // Icons for different toast types (using Font Awesome classes)
-    const icons = {
-        success: 'fas fa-check-circle',
-        error: 'fas fa-exclamation-circle',
-        info: 'fas fa-info-circle',
-        warning: 'fas fa-exclamation-triangle'
-    };
-    
-    toast.innerHTML = `
-        <i class="toast-icon ${icons[type] || icons.info}"></i>
-        <span class="toast-message">${message}</span>
-        <span class="close-toast">&times;</span>
-    `;
-    
-    container.appendChild(toast);
-    
-    // Show the toast
-    setTimeout(() => toast.classList.add('show'), 100);
-    
-    // Close button functionality
-    toast.querySelector('.close-toast').addEventListener('click', () => {
-        removeToast(toast);
-    });
-    
-    // Auto-remove after 5 seconds
-    setTimeout(() => removeToast(toast), 5000);
-}
+    function showToast(message, type = 'info') {
+        const container = document.querySelector('.toast-container') || createToastContainer();
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        
+        // Icons for different toast types (using Font Awesome classes)
+        const icons = {
+            success: 'fas fa-check-circle',
+            error: 'fas fa-exclamation-circle',
+            info: 'fas fa-info-circle',
+            warning: 'fas fa-exclamation-triangle'
+        };
+        
+        toast.innerHTML = `
+            <i class="toast-icon ${icons[type] || icons.info}"></i>
+            <span class="toast-message">${message}</span>
+            <span class="close-toast">&times;</span>
+        `;
+        
+        container.appendChild(toast);
+        
+        // Show the toast
+        setTimeout(() => toast.classList.add('show'), 100);
+        
+        // Close button functionality
+        toast.querySelector('.close-toast').addEventListener('click', () => {
+            removeToast(toast);
+        });
+        
+        // Auto-remove after 5 seconds
+        setTimeout(() => removeToast(toast), 5000);
+    }
 
-function createToastContainer() {
-    const container = document.createElement('div');
-    container.className = 'toast-container';
-    document.body.appendChild(container);
-    return container;
-}
+    function createToastContainer() {
+        const container = document.createElement('div');
+        container.className = 'toast-container';
+        document.body.appendChild(container);
+        return container;
+    }
 
-function removeToast(toast) {
-    toast.classList.remove('show');
-    setTimeout(() => toast.remove(), 300);
-}
-
+    function removeToast(toast) {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }
 });

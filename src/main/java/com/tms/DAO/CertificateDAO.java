@@ -42,43 +42,61 @@ public class CertificateDAO implements AutoCloseable {
     // =================== CRUD Operations ===================
 
     public Optional<Certificate> createCertificate(Certificate certificate) throws SQLException {
-    validateCertificate(certificate);
-    
-    byte[] pdfContent = generateCertificatePDF(
-        certificate.getTrainee(),
-        certificate.getTraining(),
-        new Timestamp(System.currentTimeMillis())
-    );
-    
-    certificate.setCertificateFile(pdfContent);
-    
-    String sql = """ 
-        INSERT INTO Certificates (trainee_id, training_id, certificate_file, issued_at)
-        VALUES (?, ?, ?, ?)
-        RETURNING id, trainee_id, training_id, certificate_file, issued_at
-        """;
-    
-    try (PreparedStatement stmt = connection.prepareStatement(sql)) {
-        stmt.setInt(1, certificate.getTrainee().getId());
-        stmt.setInt(2, certificate.getTraining().getId());
-        stmt.setBytes(3, certificate.getCertificateFile());
-        stmt.setTimestamp(4, new Timestamp(System.currentTimeMillis()));
+        validateCertificate(certificate);
+        
+        byte[] pdfContent = generateCertificatePDF(
+            certificate.getTrainee(),
+            certificate.getTraining(),
+            new Timestamp(System.currentTimeMillis())
+        );
+        
+        certificate.setCertificateFile(pdfContent);
+        
+        // Generate a unique certificate number
+        String certificateNumber = generateCertificateNumber(certificate.getTraining().getId());
+        
+        String sql = """ 
+            INSERT INTO Certificates (trainee_id, training_id, certificate_file, issued_at, certificate_number)
+            VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)
+            RETURNING id, trainee_id, training_id, certificate_file, issued_at, certificate_number
+            """;
+        
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, certificate.getTrainee().getId());
+            stmt.setInt(2, certificate.getTraining().getId());
+            stmt.setBytes(3, certificate.getCertificateFile());
+            stmt.setString(4, certificateNumber);
 
-        try (ResultSet rs = stmt.executeQuery()) {
-            if (rs.next()) {
-                // Now fetch the complete record with joins
-                return getCertificateById(rs.getInt("id"));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    // Now fetch the complete record with joins
+                    return getCertificateById(rs.getInt("id"));
+                }
+                return Optional.empty();
             }
-            return Optional.empty();
         }
     }
-}
+
+    private String generateCertificateNumber(int trainingId) throws SQLException {
+        // Get the count of certificates for this training
+        int count = countCertificatesForTraining(trainingId);
+        
+        // Format: CERT-YYYY-TTTT-NNNN
+        // YYYY = current year
+        // TTTT = training ID (padded to 4 digits)
+        // NNNN = sequence number (padded to 4 digits)
+        return String.format("CERT-%d-%04d-%04d",
+            java.time.LocalDate.now().getYear(),
+            trainingId,
+            count + 1
+        );
+    }
 
     // =================== Query Methods ===================
 
     public Optional<Certificate> getCertificateById(int id) throws SQLException {
         String sql = """
-            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at,
+            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at, c.certificate_number,
                    u.first_name, u.last_name, t.title as training_title
             FROM Certificates c
             JOIN Users u ON c.trainee_id = u.id
@@ -96,7 +114,7 @@ public class CertificateDAO implements AutoCloseable {
 
     public Optional<Certificate> getCertificate(int traineeId, int trainingId) throws SQLException {
         String sql = """
-            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at,
+            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at, c.certificate_number,
                    u.first_name, u.last_name, t.title as training_title
             FROM Certificates c
             JOIN Users u ON c.trainee_id = u.id
@@ -116,7 +134,7 @@ public class CertificateDAO implements AutoCloseable {
     public List<Certificate> getAllCertificates() throws SQLException {
         List<Certificate> certificates = new ArrayList<>();
         String sql = """
-            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at,
+            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at, c.certificate_number,
                    u.first_name, u.last_name, t.title as training_title
             FROM Certificates c
             JOIN Users u ON c.trainee_id = u.id
@@ -136,7 +154,7 @@ public class CertificateDAO implements AutoCloseable {
     public List<Certificate> getCertificatesByTrainee(int traineeId) throws SQLException {
         List<Certificate> certificates = new ArrayList<>();
         String sql = """
-            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at,
+            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at, c.certificate_number,
                    u.first_name, u.last_name, t.title as training_title
             FROM Certificates c
             JOIN Users u ON c.trainee_id = u.id
@@ -159,7 +177,7 @@ public class CertificateDAO implements AutoCloseable {
     public List<Certificate> getCertificatesByTraining(int trainingId) throws SQLException {
         List<Certificate> certificates = new ArrayList<>();
         String sql = """
-            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at,
+            SELECT c.id, c.trainee_id, c.training_id, c.certificate_file, c.issued_at, c.certificate_number,
                    u.first_name, u.last_name, t.title as training_title
             FROM Certificates c
             JOIN Users u ON c.trainee_id = u.id
@@ -219,6 +237,7 @@ public class CertificateDAO implements AutoCloseable {
         
         certificate.setCertificateFile(rs.getBytes("certificate_file"));
         certificate.setIssuedAt(rs.getTimestamp("issued_at"));
+        certificate.setCertificateNumber(rs.getString("certificate_number"));
         
         return certificate;
     }

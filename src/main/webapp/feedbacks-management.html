@@ -200,6 +200,16 @@
         </div>
     </div>
 
-    <script src="Js/feedbacks-management.js"></script>
+    <!-- Load configuration first -->
+    <script type="text/javascript" src="Js/config.js"></script>
+    <!-- Then load the main script -->
+    <script type="text/javascript" src="Js/feedbacks-management.js"></script>
+    <!-- Add error handling -->
+    <script type="text/javascript">
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('Error: ' + msg + '\nURL: ' + url + '\nLine: ' + lineNo + '\nColumn: ' + columnNo + '\nError object: ' + JSON.stringify(error));
+            return false;
+        };
+    </script>
 </body>
 </html>

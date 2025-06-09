@@ -87,15 +87,24 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
                 return response.json();
             })
-            .then(sessions => {
-                allSessions = sessions;
-                filteredSessions = [...sessions];
+            .then(data => {
+                // Handle different possible response structures
+                allSessions = Array.isArray(data) ? data : 
+                            data.data || data.sessions || [];
+                
+                console.log('Fetched sessions:', allSessions); // Debug log
+                
+                filteredSessions = [...allSessions];
                 renderSessionsTable();
                 updatePagination();
             })
             .catch(error => {
                 console.error('Error fetching sessions:', error);
                 showToast('Failed to load sessions. Please try again.', 'error');
+                allSessions = [];
+                filteredSessions = [];
+                renderSessionsTable();
+                updatePagination();
             });
     }
 
@@ -108,12 +117,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                allTrainingCourses = data;
+                // Handle different possible response structures
+                allTrainingCourses = Array.isArray(data) ? data : 
+                                   data.data || data.trainingCourses || [];
+                
+                console.log('Fetched training courses:', allTrainingCourses); // Debug log
+                
                 populateTrainingCourseSelects();
             })
             .catch(error => {
                 console.error('Error fetching training courses:', error);
                 showToast('Failed to load training courses. Please try again.', 'error');
+                allTrainingCourses = [];
+                populateTrainingCourseSelects();
             });
     }
 
@@ -123,7 +139,9 @@ document.addEventListener('DOMContentLoaded', function() {
         allTrainingCourses.forEach(tc => {
             const option = document.createElement('option');
             option.value = tc.id;
-            option.textContent = `${tc.training.title} - ${tc.course.title}`;
+            const training = tc.training || {};
+            const course = tc.course || {};
+            option.textContent = `${training.title || ''} - ${course.title || ''}`;
             trainingCourseFilter.appendChild(option);
         });
 
@@ -132,7 +150,9 @@ document.addEventListener('DOMContentLoaded', function() {
         allTrainingCourses.forEach(tc => {
             const option = document.createElement('option');
             option.value = tc.id;
-            option.textContent = `${tc.training.title} - ${tc.course.title}`;
+            const training = tc.training || {};
+            const course = tc.course || {};
+            option.textContent = `${training.title || ''} - ${course.title || ''}`;
             trainingCourseSelect.appendChild(option);
         });
     }
@@ -192,39 +212,36 @@ document.addEventListener('DOMContentLoaded', function() {
         sessionsToDisplay.forEach(session => {
             const tr = document.createElement('tr');
             
-            const statusClass = `status-${session.status.toLowerCase()}`;
+            const statusClass = `status-${(session.status || '').toLowerCase()}`;
             const statusText = getStatusLabel(session.status);
             
+            // Safely access nested properties
+            const trainingCourse = session.trainingCourseId || {};
+            const training = trainingCourse.training || {};
+            const course = trainingCourse.course || {};
+            
             tr.innerHTML = `
-                <td>${session.id}</td>
-                <td>${session.trainingCourseId.training.title} - ${session.trainingCourseId.course.title}</td>
+                <td>${session.id || ''}</td>
+                <td>${training.title || ''} - ${course.title || ''}</td>
                 <td>${formatDate(session.sessionDate)}</td>
-                <td>${session.startTime} - ${session.endTime}</td>
+                <td>${formatTime(session.startTime)} - ${formatTime(session.endTime)}</td>
                 <td><span class="status-badge ${statusClass}">${statusText}</span></td>
                 <td>${formatDateTime(session.createdAt)}</td>
                 <td class="actions">
-                    <button class="action-btn edit-btn" data-id="${session.id}" title="Edit">
+                    <button class="action-btn edit-btn" data-id="${session.id}">
                         <i class="fas fa-edit"></i>
                     </button>
-                    <button class="action-btn status-btn" data-id="${session.id}" title="Change Status">
-                        <i class="fas fa-exchange-alt"></i>
-                    </button>
-                    <button class="action-btn delete-btn" data-id="${session.id}" title="Delete">
+                    <button class="action-btn delete-btn" data-id="${session.id}">
                         <i class="fas fa-trash-alt"></i>
                     </button>
                 </td>
             `;
-            
             tbody.appendChild(tr);
         });
 
         // Add event listeners to action buttons
         document.querySelectorAll('.edit-btn').forEach(btn => {
             btn.addEventListener('click', () => openSessionModal('edit', btn.dataset.id));
-        });
-
-        document.querySelectorAll('.status-btn').forEach(btn => {
-            btn.addEventListener('click', () => openStatusModal(btn.dataset.id));
         });
 
         document.querySelectorAll('.delete-btn').forEach(btn => {

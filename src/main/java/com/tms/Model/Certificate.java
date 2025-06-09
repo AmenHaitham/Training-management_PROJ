@@ -8,6 +8,7 @@ public class Certificate {
     private Training training;
     private Timestamp issuedAt;
     private byte[] certificateFile;
+    private String certificateNumber;
 
     // Constructors
     public Certificate() {}
@@ -33,4 +34,7 @@ public class Certificate {
 
     public byte[] getCertificateFile() { return this.certificateFile; }
     public void setCertificateFile(byte[] certificateFile) { this.certificateFile = certificateFile; }
+
+    public String getCertificateNumber() { return certificateNumber; }
+    public void setCertificateNumber(String certificateNumber) { this.certificateNumber = certificateNumber; }
 }
